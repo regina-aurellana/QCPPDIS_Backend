@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\B3Project\AddProjectRequest;
 use App\Http\Requests\B3Project\UpdateProjectRequest;
 use App\Models\B3Projects;
-use Carbon\Carbon;
 
 class B3ProjectsController extends Controller
 {
@@ -15,7 +14,10 @@ class B3ProjectsController extends Controller
      */
     public function index()
     {
-        $b3Projects = B3Projects::get();
+        $b3Projects = B3Projects::join('project_natures', 'b3_projects.id', 'b3_projects.project_nature_id' )
+        ->join('project_nature_types', 'project_natures.id', 'project_nature_types.project_nature_id')        
+        ->select('b3_projects.registry_no', 'b3_projects.project_title', 'b3_projects.location', 'project_natures.name As project_nature', 'project_nature_types.name As project_nature_type', 'b3_projects.status')
+        ->paginate(2);
 
         return response()->json($b3Projects);
     }
@@ -37,12 +39,12 @@ class B3ProjectsController extends Controller
             // B3Projects::create([
             //     'registry_no' => $request['registry_no'],
             //     'project_title' => $request['project_title'],
-            //     'project_nature_id' => $request['project_nature_id'],
-            //     'project_nature_type_id' => $request['project_nature_type_id'],
+            //     'project_nature_id' => $request['project_nature'],
+            //     'project_nature_type' => $request['project_nature_type'],
             //     'location' => $request['location'],
             //     'status' => $request['status'],
             // ]);
-          
+            // return $request;
 
               $proj = B3Projects::updateOrCreate(
                 ['registry_no' => $request['registry_no']],
@@ -54,8 +56,6 @@ class B3ProjectsController extends Controller
                         'status' => $request['status'],
                     ]
                );
-
-              
 
             return response()->json([
                 'status' => "SUCCESS",
