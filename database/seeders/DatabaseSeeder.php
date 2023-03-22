@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             DupaLaborSeeder::class,
             DupaEquipmentSeeder::class,
             DupaMaterialSeeder::class,
+            ProjectNatureSeeder::class,
+            ProjectNatureTypeSeeder::class,
             B3ProjectSeeder::class,
         ]);
     }

@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Material;
-use App\Http\Requests\Material\AddMaterialRequest;
+use App\Http\Requests\Labor\AddLaborRequest;
+use App\Http\Requests\Labor\UpdateLaborRequest;
+use App\Models\Labor;
 
-class MaterialController extends Controller
+class LaborController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $material = Material::get();
+        $labor = Labor::get();
 
-        return response()->json($material);
+        return response()->json($labor);
     }
 
     /**
@@ -23,30 +24,29 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AddMaterialRequest $request)
+    public function store(AddLaborRequest $request)
     {
+       
         try {
-            Material::create([
+            Labor::create([
                 'item_code' => $request['item_code'],
-                'name' => $request['name'],
-                'unit' => $request['unit'],
-                'unit_cost' => $request['unit_cost'],
-            ]);
-    
-            return response()->json([
-                'status' => "SUCCESS",
-                'message' => "Successfully Added Material"
+                'designation' => $request['designation'],        
+                'hourly_rate' => $request['hourly_rate'],
             ]);
 
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'Labor Added'
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => "Error",
+                'status' => 'Error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -71,27 +71,25 @@ class MaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AddMaterialRequest $request, Material $material)
+    public function update(UpdateLaborRequest $request, Labor $labor)
     {
         try {
-            $material->update([
+            $labor->update([
                 'item_code' => $request->item_code,
-                'name' => $request->name,
-                'unit' => $request->unit,
-                'unit_cost' => $request->unit_cost,
+                'designation' => $request->designation,        
+                'hourly_rate' => $request->hourly_rate,
             ]);
 
             return response()->json([
                 'status' => 'Success',
-                'message' => "Material is Updated"
+                'message' => 'Labor Updated'
             ]);
-
-       } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'Success',
-                'message' => $th->getMessage()
+                'status' => 'Error',
+                'message' => $th->getMessage
             ]);
-       }
+        }
     }
 
     /**

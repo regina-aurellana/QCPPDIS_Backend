@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\B3Project\AddProjectRequest;
+use App\Http\Requests\B3Project\UpdateProjectRequest;
 use App\Models\B3Projects;
 
 class B3ProjectsController extends Controller
@@ -13,7 +14,7 @@ class B3ProjectsController extends Controller
      */
     public function index()
     {
-        $b3Projects = B3Projects::get();
+        $b3Projects = B3Projects::paginate(2);
 
         return response()->json($b3Projects);
     }
@@ -43,7 +44,7 @@ class B3ProjectsController extends Controller
 
             return response()->json([
                 'status' => "SUCCESS",
-                'message' => "Successfully Added Material"
+                'message' => "Successfully Added Project"
             ]);
 
         } catch (\Throwable $th) {
@@ -73,9 +74,28 @@ class B3ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProjectRequest $request, B3Projects $project)
     {
-       
+       try {
+            $project->update([
+                'registry_no' => $request->registry_no,
+                'project_title' => $request->project_title,
+                'project_nature' => $request->project_nature,
+                'project_nature_type' => $request->project_nature_type,
+                'location' => $request->location,
+                'status' => $request->status,
+            ]);
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'B3 Project is Updated'
+            ]);
+       } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'Success',
+                'message' => $th->getMessage()
+            ]);
+       }
     }
 
     /**

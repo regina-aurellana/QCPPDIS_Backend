@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Material;
+namespace App\Http\Requests\Equipment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddMaterialRequest extends FormRequest
+class UpdateEquipmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,10 +22,7 @@ class AddMaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'item_code' => 'required',
-            'name' => 'required',
-            'unit' => 'required',
-            'unit_cost' => 'required',
+            //
         ];
     }
 }
