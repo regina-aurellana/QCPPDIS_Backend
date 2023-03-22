@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\ProjectNature;
+use App\Models\B3Projects;
 
 class ProjectNatureType extends Model
 {
@@ -18,5 +19,8 @@ class ProjectNatureType extends Model
 
     public function projectNature(){
         return $this->belongsTo(ProjectNature::class);
+    }
+    public function b3Project(){
+        return $this->belongsTo(B3Projects::class);
     }
 }
