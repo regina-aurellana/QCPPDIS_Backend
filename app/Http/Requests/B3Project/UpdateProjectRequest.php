@@ -24,7 +24,7 @@ class UpdateProjectRequest extends FormRequest
         return [
             'registry_no' => 'required',
             'project_title' => 'required',
-            'project_nature' => 'required',
+            'project_nature_id' => 'required',
             'project_nature_type' => 'required',
             'location' => 'required',
             'status' => 'required',

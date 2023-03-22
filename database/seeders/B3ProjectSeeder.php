@@ -18,7 +18,7 @@ class B3ProjectSeeder extends Seeder
             [
                 'registry_no' => 'DED0001',
                 'project_title' => 'Proposed Rehabilitation of Road and Drainage',
-                'project_nature' => 'Horizontal',
+                'project_nature_id' => '1',
                 'project_nature_type' => 'Road',
                 'location' => 'Quezon City',
                 'status' => 'Pending',
@@ -26,7 +26,7 @@ class B3ProjectSeeder extends Seeder
             [
                 'registry_no' => 'DED0002',
                 'project_title' => 'Proposed Rehabilitation of Public Library',
-                'project_nature' => 'Vertical',
+                'project_nature_id' => '2',
                 'project_nature_type' => 'Library',
                 'location' => 'Quezon City',
                 'status' => 'On-going',
@@ -34,7 +34,7 @@ class B3ProjectSeeder extends Seeder
             [
                 'registry_no' => 'DED0003',
                 'project_title' => 'Proposed Construction of Swimming Pool at Amoranto',
-                'project_nature' => 'Horizontal',
+                'project_nature_id' => '1',
                 'project_nature_type' => 'Swimming Pool',
                 'location' => 'Quezon City',
                 'status' => 'Pending',
@@ -42,7 +42,7 @@ class B3ProjectSeeder extends Seeder
             [
                 'registry_no' => 'DED0004',
                 'project_title' => 'Proposed Construction of Parking Building at Amoranto',
-                'project_nature' => 'Vertical',
+                'project_nature_id' => '2',
                 'project_nature_type' => 'Building',
                 'location' => 'Quezon City',
                 'status' => 'Completed',
@@ -53,7 +53,7 @@ class B3ProjectSeeder extends Seeder
             B3Projects::create([
                 'registry_no' => $b3Projects['registry_no'],
                 'project_title' => $b3Projects['project_title'],
-                'project_nature' => $b3Projects['project_nature'],
+                'project_nature_id' => $b3Projects['project_nature_id'],
                 'project_nature_type' => $b3Projects['project_nature_type'],
                 'location' => $b3Projects['location'],
                 'status' => $b3Projects['status'],

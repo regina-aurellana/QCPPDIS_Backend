@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Material;
+namespace App\Http\Requests\Labor;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddMaterialRequest extends FormRequest
+class AddLaborRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class AddMaterialRequest extends FormRequest
     {
         return [
             'item_code' => 'required',
-            'name' => 'required',
-            'unit' => 'required',
-            'unit_cost' => 'required',
+            'designation' => 'required',        
+            'hourly_rate' => 'required',
         ];
     }
 }

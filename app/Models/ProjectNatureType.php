@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\ProjectNature;
 
-class B3Projects extends Model
+class ProjectNatureType extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+
+    protected $fillable = [
+        'project_nature_id',
+        'name',
+    ];
 
     public function projectNature(){
-        return $this->hasOne(ProjectNature::class, 'project_nature_id', 'id');
+        return $this->belongsTo(ProjectNature::class);
     }
 }

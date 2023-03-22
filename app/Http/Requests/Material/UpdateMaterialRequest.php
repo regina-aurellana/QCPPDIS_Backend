@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Material;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MaterialRequest extends FormRequest
+class UpdateMaterialRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class MaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'item_code' => 'required',
+            'name' => 'required',
+            'unit' => 'required',
+            'unit_cost' => 'required',
         ];
     }
 }
