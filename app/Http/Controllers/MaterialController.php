@@ -32,12 +32,15 @@ class MaterialController extends Controller
     public function store(AddMaterialRequest $request)
     {
         try {
-            Material::create([
-                'item_code' => $request['item_code'],
-                'name' => $request['name'],
-                'unit' => $request['unit'],
-                'unit_cost' => $request['unit_cost'],
-            ]);
+            Material::updateOrCreate(
+                ['item_code' => $request['item_code']],
+
+                [
+                    'name' => $request['name'],
+                    'unit' => $request['unit'],
+                    'unit_cost' => $request['unit_cost'],
+                ]
+            );
     
             return response()->json([
                 'status' => "SUCCESS",

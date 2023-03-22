@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ProjectNature\AddProjectNatureRequest;
 
 use App\Models\ProjectNature;
 
@@ -13,9 +14,9 @@ class ProjectNatureController extends Controller
      */
     public function index()
     {
-        $projNature = ProjectNature::get();
+        $proj_nature = ProjectNature::get();
 
-        return response()->json($projNature);
+        return response()->json($proj_nature);
     }
 
     /**
@@ -23,15 +24,29 @@ class ProjectNatureController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddProjectNatureRequest $request)
     {
-        //
+        try {
+            ProjectNature::updateOrCreate([
+                'name' => $request['name'],
+            ]);
+
+            return response()->json([
+                'status' => "SUCCESS",
+                'message' => "Successfully Added Project Nature"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**

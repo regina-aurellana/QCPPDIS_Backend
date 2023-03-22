@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ProjectNature;
+namespace App\Http\Requests\ProjectNatureType;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddProjectNatureRequest extends FormRequest
+class AddProjectNatureTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +22,7 @@ class AddProjectNatureRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'project_nature_id' => 'required',
             'name' => 'required',
         ];
     }

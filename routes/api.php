@@ -8,6 +8,7 @@ use App\Http\Controllers\B3ProjectsController;
 use App\Http\Controllers\LaborController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ProjectNatureController;
+use App\Http\Controllers\ProjectNatureTypeController;
 
  
 Route::resource('dupa', DupaController::class);
@@ -21,3 +22,5 @@ Route::resource('labor', LaborController::class);
 Route::resource('equipment', LaborController::class);
 
 Route::resource('nature', ProjectNatureController::class);
+
+Route::resource('nature-type', ProjectNatureTypeController::class);
