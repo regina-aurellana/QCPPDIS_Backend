@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('registry_no');
             $table->string('project_title');
             $table->unsignedBigInteger('project_nature_id');
-            $table->string('project_nature_type');
+            $table->unsignedBigInteger('project_nature_type_id');
             $table->string('location');
             $table->string('status');
             $table->timestamps();
 
             $table->foreign('project_nature_id')->references('id')->on('project_natures');
+            $table->foreign('project_nature_type_id')->references('id')->on('project_nature_types');
 
             
         });

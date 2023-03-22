@@ -25,7 +25,7 @@ class AddProjectRequest extends FormRequest
             'registry_no' => 'required',
             'project_title' => 'required',
             'project_nature_id' => 'required',
-            'project_nature_type' => 'required',
+            'project_nature_type_id' => 'required',
             'location' => 'required',
             'status' => 'required',
         ];
