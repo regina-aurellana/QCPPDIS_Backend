@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\B3Project\AddProjectRequest;
 use App\Http\Requests\B3Project\UpdateProjectRequest;
 use App\Models\B3Projects;
+use Carbon\Carbon;
 
 class B3ProjectsController extends Controller
 {
@@ -36,15 +37,6 @@ class B3ProjectsController extends Controller
     public function store(AddProjectRequest $request){
 
         try {
-            // B3Projects::create([
-            //     'registry_no' => $request['registry_no'],
-            //     'project_title' => $request['project_title'],
-            //     'project_nature_id' => $request['project_nature'],
-            //     'project_nature_type' => $request['project_nature_type'],
-            //     'location' => $request['location'],
-            //     'status' => $request['status'],
-            // ]);
-            // return $request;
 
               $proj = B3Projects::updateOrCreate(
                 ['registry_no' => $request['registry_no']],
@@ -56,6 +48,15 @@ class B3ProjectsController extends Controller
                         'status' => $request['status'],
                     ]
                );
+
+               $str = sprintf('%04d', $proj->id);
+               $ded = "DED";
+                $ded_num = $ded . Carbon::now('Asia/Manila')->format('Y'). '_' . $str;
+
+                B3Projects::where('id', $proj->id)
+                ->update([
+                    'registry_no' => $ded_num,
+                ]);
 
             return response()->json([
                 'status' => "SUCCESS",

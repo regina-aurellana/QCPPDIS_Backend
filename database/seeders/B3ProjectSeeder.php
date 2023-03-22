@@ -16,7 +16,7 @@ class B3ProjectSeeder extends Seeder
     {
         $b3Project = [
             [
-                'registry_no' => 'DED0001',
+                'registry_no' => 'DED2023_0001',
                 'project_title' => 'Proposed Rehabilitation of Road and Drainage',
                 'project_nature_id' => '1',
                 'project_nature_type_id' => '1',
@@ -24,7 +24,7 @@ class B3ProjectSeeder extends Seeder
                 'status' => 'Pending',
             ],
             [
-                'registry_no' => 'DED0002',
+                'registry_no' => 'DED2023_0002',
                 'project_title' => 'Proposed Rehabilitation of Public Library',
                 'project_nature_id' => '2',
                 'project_nature_type_id' => '6',
@@ -32,7 +32,7 @@ class B3ProjectSeeder extends Seeder
                 'status' => 'On-going',
             ],
             [
-                'registry_no' => 'DED0003',
+                'registry_no' => 'DED2023_0003',
                 'project_title' => 'Proposed Construction of Swimming Pool at Amoranto',
                 'project_nature_id' => '1',
                 'project_nature_type_id' => '3',
@@ -40,7 +40,7 @@ class B3ProjectSeeder extends Seeder
                 'status' => 'Pending',
             ],
             [
-                'registry_no' => 'DED0004',
+                'registry_no' => 'DED2023_0004',
                 'project_title' => 'Proposed Construction of Parking Building at Amoranto',
                 'project_nature_id' => '2',
                 'project_nature_type_id' => '5',
