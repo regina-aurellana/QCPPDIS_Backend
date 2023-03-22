@@ -14,9 +14,9 @@ class B3ProjectsController extends Controller
      */
     public function index()
     {
-        $b3Projects = B3Projects::join('project_natures', 'b3_projects.id', 'b3_projects.project_nature_id' )
-        ->join('project_nature_types', 'project_natures.id', 'project_nature_types.project_nature_id')        
-        ->select('b3_projects.registry_no', 'b3_projects.project_title', 'b3_projects.location', 'project_natures.name As project_nature', 'project_nature_types.name As project_nature_type', 'b3_projects.status')
+        $b3Projects = B3Projects::join('project_nature_types', 'project_nature_types.id', 'b3_projects.project_nature_type_id' )
+        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')        
+        ->select('b3_projects.*', 'project_natures.name As project_nature', 'project_nature_types.name As project_nature_type')
         ->paginate(2);
 
         return response()->json($b3Projects);
@@ -73,15 +73,21 @@ class B3ProjectsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(B3Projects $project)
     {
-        //
+        $b3Projects = $project->join('project_nature_types', 'project_nature_types.id', 'b3_projects.project_nature_type_id' )
+        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')        
+        ->select('b3_projects.*', 'project_natures.name As project_nature', 'project_nature_types.name As project_nature_type')
+        ->where('b3_projects.id', $project->id) 
+        ->first();
+
+        return response()->json($b3Projects);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
         //
     }
@@ -91,26 +97,7 @@ class B3ProjectsController extends Controller
      */
     public function update(UpdateProjectRequest $request, B3Projects $project)
     {
-       try {
-            $project->update([
-                'registry_no' => $request->registry_no,
-                'project_title' => $request->project_title,
-                'project_nature' => $request->project_nature,
-                'project_nature_type' => $request->project_nature_type,
-                'location' => $request->location,
-                'status' => $request->status,
-            ]);
-
-            return response()->json([
-                'status' => 'Success',
-                'message' => 'B3 Project is Updated'
-            ]);
-       } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'Success',
-                'message' => $th->getMessage()
-            ]);
-       }
+       
     }
 
     /**
