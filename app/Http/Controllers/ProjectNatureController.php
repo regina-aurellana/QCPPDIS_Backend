@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProjectNature\AddProjectNatureRequest;
+use Carbon\Carbon;
+
 
 use App\Models\ProjectNature;
 
@@ -80,8 +82,20 @@ class ProjectNatureController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ProjectNature $nature)
     {
-        //
+        try {
+            $nature->delete();
+
+            return response()->json([
+                'status' => "SUCCESS",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage
+            ]);
+        }
     }
 }

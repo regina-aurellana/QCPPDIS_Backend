@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Http\Requests\Equipment\AddEquipmentRequest;
+use Carbon\Carbon;
 
 class EquipmentController extends Controller
 {
@@ -81,8 +82,20 @@ class EquipmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Equipment $equipment)
     {
-        //
+        try {
+            $equipment->delete();
+
+            return response()->json([
+                'status' => "SUCCESS",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage
+            ]);
+        }
     }
 }

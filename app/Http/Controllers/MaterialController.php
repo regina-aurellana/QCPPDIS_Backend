@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Http\Requests\Material\AddMaterialRequest;
+use Carbon\Carbon;
 
 class MaterialController extends Controller
 {
@@ -84,8 +85,20 @@ class MaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Material $material)
     {
-        //
+        try {
+            $material->delete();
+
+            return response()->json([
+                'status' => "SUCCESS",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage
+            ]);
+        }
     }
 }

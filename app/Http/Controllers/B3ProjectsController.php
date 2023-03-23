@@ -38,6 +38,7 @@ class B3ProjectsController extends Controller
 		
         try {
 					if($request['registry_no'] == null){
+                        
 						$count =B3Projects::count();
 						$str = sprintf('%04d', ++$count );
 						$ded = "DED";
@@ -116,19 +117,19 @@ class B3ProjectsController extends Controller
      */
     public function destroy(B3Projects $project)
     {
-        try {
-            $project->delete();
+        // try {
+        //     $project->delete();
 
-            return response()->json([
-                'status' => "SUCCESS",
-                'message' => "Successfully Added Project"
-            ]);
+        //     return response()->json([
+        //         'status' => "SUCCESS",
+        //         'message' => "Deleted Successfully"
+        //     ]);
 
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => "Error",
-                'message' => $th->getMessage
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'status' => "Error",
+        //         'message' => $th->getMessage
+        //     ]);
+        // }
     }
 }
