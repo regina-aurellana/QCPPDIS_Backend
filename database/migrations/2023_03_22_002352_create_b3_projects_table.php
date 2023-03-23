@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('project_nature_type_id');
             $table->string('location');
             $table->string('status');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('project_nature_id')->references('id')->on('project_natures');

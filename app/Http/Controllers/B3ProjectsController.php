@@ -17,8 +17,8 @@ class B3ProjectsController extends Controller
     {
         $b3Projects = B3Projects::join('project_nature_types', 'project_nature_types.id', 'b3_projects.project_nature_type_id' )
         ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')        
-        ->select('b3_projects.*', 'project_natures.name As project_nature', 'project_nature_types.name As project_nature_type')
-        ->paginate(2);
+        ->select('b3_projects.id', 'b3_projects.registry_no', 'b3_projects.project_title', 'b3_projects.location', 'b3_projects.status', 'project_natures.name AS project_nature_id', 'project_nature_types.name As project_nature_type_id')
+        ->get();
 
         return response()->json($b3Projects);
     }
@@ -35,28 +35,38 @@ class B3ProjectsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(AddProjectRequest $request){
-
+		
         try {
+					if($request['registry_no'] == null){
+						$count =B3Projects::count();
+						$str = sprintf('%04d', ++$count );
+						$ded = "DED";
+						$ded_num = $ded . Carbon::now('Asia/Manila')->format('Y'). '_' . $str;
 
-              $proj = B3Projects::updateOrCreate(
-                ['registry_no' => $request['registry_no']],
-                    [
-                        'project_title' => $request['project_title'],
-                        'project_nature_id' => $request['project_nature_id'],
-                        'project_nature_type_id' => $request['project_nature_type_id'],
-                        'location' => $request['location'],
-                        'status' => $request['status'],
-                    ]
-               );
+						$proj = B3Projects::updateOrCreate(
+							['registry_no' => $ded_num],
+									[
+											'project_title' => $request['project_title'],
+											'project_nature_id' => $request['project_nature_id'],
+											'project_nature_type_id' => $request['project_nature_type_id'],
+											'location' => $request['location'],
+											'status' => $request['status'],
+									]
+						 );
+					} else{ 
+						
+						$proj = B3Projects::updateOrCreate(
+						['registry_no' => $request['registry_no']],
+								[
+										'project_title' => $request['project_title'],
+										'project_nature_id' => $request['project_nature_id'],
+										'project_nature_type_id' => $request['project_nature_type_id'],
+										'location' => $request['location'],
+										'status' => $request['status'],
+								]
+					 );
 
-               $str = sprintf('%04d', $proj->id);
-               $ded = "DED";
-                $ded_num = $ded . Carbon::now('Asia/Manila')->format('Y'). '_' . $str;
-
-                B3Projects::where('id', $proj->id)
-                ->update([
-                    'registry_no' => $ded_num,
-                ]);
+					}
 
             return response()->json([
                 'status' => "SUCCESS",
@@ -104,8 +114,21 @@ class B3ProjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(B3Projects $project)
     {
-        //
+        try {
+            $project->delete();
+
+            return response()->json([
+                'status' => "SUCCESS",
+                'message' => "Successfully Added Project"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage
+            ]);
+        }
     }
 }

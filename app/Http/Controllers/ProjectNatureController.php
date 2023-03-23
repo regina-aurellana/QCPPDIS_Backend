@@ -52,9 +52,13 @@ class ProjectNatureController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ProjectNature $nature)
     {
-        //
+        $proj_nature = ProjectNature::with('projectNatureType')
+        ->where('project_natures.id', $nature->id)
+        ->first();
+
+        return response()->json($proj_nature);
     }
 
     /**

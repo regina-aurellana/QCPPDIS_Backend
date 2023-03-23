@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('dupa_content_id');
             $table->unsignedBigInteger('material_id');
             $table->string('quantity');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('dupa_content_id')->references('id')->on('dupa_contents');

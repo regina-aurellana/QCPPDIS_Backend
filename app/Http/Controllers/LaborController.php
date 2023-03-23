@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Labor\AddLaborRequest;
 use App\Http\Requests\Labor\UpdateLaborRequest;
 use App\Models\Labor;
+use Carbon\Carbon;
 
 class LaborController extends Controller
 {
@@ -34,11 +35,13 @@ class LaborController extends Controller
     {
        
         try {
-            Labor::create([
-                'item_code' => $request['item_code'],
-                'designation' => $request['designation'],        
-                'hourly_rate' => $request['hourly_rate'],
-            ]);
+            Labor::updateOrCreate(
+                ['item_code' => $request['item_code']],
+                    [
+                      'designation' => $request['designation'],        
+                    	'hourly_rate' => $request['hourly_rate'],
+                    ]
+            );
 
             return response()->json([
                 'status' => 'Success',
@@ -55,9 +58,11 @@ class LaborController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Labor $labor)
     {
-        //
+        $labors = Labor::find($labor);
+
+				return response()->json($labors);
     }
 
     /**
@@ -73,30 +78,27 @@ class LaborController extends Controller
      */
     public function update(UpdateLaborRequest $request, Labor $labor)
     {
-        try {
-            $labor->update([
-                'item_code' => $request->item_code,
-                'designation' => $request->designation,        
-                'hourly_rate' => $request->hourly_rate,
-            ]);
-
-            return response()->json([
-                'status' => 'Success',
-                'message' => 'Labor Updated'
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'Error',
-                'message' => $th->getMessage
-            ]);
-        }
+       
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Labor $labor)
     {
-        //
+        try {
+					$labor->delete();
+
+					return response()->json([
+						'status' => "Success",
+						'message' => 'Deleted Successfully'
+					]);
+
+				} catch (\Throwable $th) {
+					return response()->json([
+						'status' => "Error",
+						'message' => $th->getMessage()
+					]);
+				}
     }
 }

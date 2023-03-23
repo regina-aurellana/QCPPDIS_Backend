@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Equipment;
+use App\Http\Requests\Equipment\AddEquipmentRequest;
 
 class EquipmentController extends Controller
 {
@@ -11,7 +13,9 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        //
+       $equipment = Equipment::get();
+
+       return response()->json($equipment);
     }
 
     /**
@@ -25,17 +29,37 @@ class EquipmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddEquipmentRequest $request)
     {
-        //
+        try {
+            Equipment::updateOrCreate(
+                ['item_code' => $request['item_code']],
+                [
+                    'name' => $request['name'],
+                    'hourly_rate' => $request['hourly_rate']
+                    
+                ]
+            );
+                return response()->json([
+                    'status' => 'Success',
+                    'message' => 'Equipment Added'
+                ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'erroe',
+                'message' => $th->getMessage
+            ]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Equipment $equipment)
     {
-        //
+        $equipments = Equipment::find($equipment);
+
+       return response()->json($equipments);
     }
 
     /**

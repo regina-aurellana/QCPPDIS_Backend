@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('item_code');
             $table->string('designation');
             $table->string('hourly_rate');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

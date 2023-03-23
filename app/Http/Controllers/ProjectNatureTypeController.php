@@ -53,19 +53,15 @@ class ProjectNatureTypeController extends Controller
             ]);
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProjectNatureType $projnature_type)
+    
+    public function show(ProjectNatureType $type)
     {
-        $proj_nature_type = $projnature_type
-            ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')
-            ->select('project_nature_types.*', 'project_natures.name as project_nature_name')
-            ->where('project_nature_types.id', $projnature_type->id)            
-            ->first();
+        $nature_type = $type->with('projectNature')
+            ->where('project_nature_types.project_nature_id', $type->id)    
+            ->select('project_nature_types.name', 'project_nature_types.id')
+            ->get();
 
-        return response()->json($proj_nature_type);
+        return response()->json($nature_type);
     }
 
     /**

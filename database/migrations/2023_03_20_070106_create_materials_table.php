@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('unit');
             $table->string('unit_cost');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

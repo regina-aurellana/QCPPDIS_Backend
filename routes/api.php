@@ -19,8 +19,8 @@ Route::resource('project', B3ProjectsController::class);
 
 Route::resource('labor', LaborController::class);
 
-Route::resource('equipment', LaborController::class);
+Route::resource('equipment', EquipmentController::class);
 
 Route::resource('nature', ProjectNatureController::class);
 
-Route::resource('nature-type', ProjectNatureTypeController::class);
+Route::resource('type', ProjectNatureTypeController::class);
