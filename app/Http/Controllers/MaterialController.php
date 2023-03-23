@@ -55,12 +55,14 @@ class MaterialController extends Controller
         }
     }
 
-    /**
+    /** 
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Material $material)
     {
-        //
+        $mat = Material::find($material);
+
+        return response()->json($mat);
     }
 
     /**
@@ -76,25 +78,7 @@ class MaterialController extends Controller
      */
     public function update(AddMaterialRequest $request, Material $material)
     {
-        try {
-            $material->update([
-                'item_code' => $request->item_code,
-                'name' => $request->name,
-                'unit' => $request->unit,
-                'unit_cost' => $request->unit_cost,
-            ]);
-
-            return response()->json([
-                'status' => 'Success',
-                'message' => "Material is Updated"
-            ]);
-
-       } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'Success',
-                'message' => $th->getMessage()
-            ]);
-       }
+       
     }
 
     /**

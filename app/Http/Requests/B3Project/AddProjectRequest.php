@@ -22,7 +22,6 @@ class AddProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'registry_no' => 'required',
             'project_title' => 'required',
             'project_nature_id' => 'required',
             'project_nature_type_id' => 'required',

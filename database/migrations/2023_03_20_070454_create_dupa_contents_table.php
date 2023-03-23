@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('dupa_contents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('dupa_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('dupa_id')->references('id')->on('dupas');   

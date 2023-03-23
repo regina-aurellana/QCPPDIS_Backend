@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('equipment_id');
             $table->string('no_of_unit');
             $table->string('no_of_hour');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('dupa_content_id')->references('id')->on('dupa_contents');
