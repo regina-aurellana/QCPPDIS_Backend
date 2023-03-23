@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Dupa\AddDupaRequest;
+use App\Models\Dupa;
+use Carbon\Carbon;
 
 class DupaController extends Controller
 {
@@ -11,7 +14,9 @@ class DupaController extends Controller
      */
     public function index()
     {
-        
+        $dupa = Dupa::get();
+
+        return response()->json($dupa);
     }
 
     /**
@@ -25,17 +30,39 @@ class DupaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddDupaRequest $request)
     {
-        //
+        try {
+            Dupa::updateOrCreate(
+                ['item_number' => $request['item_number']],
+                [
+                    'subcategory_id' => $request['subcategory_id'],
+                    'description' => $request['description'],
+                    'unit' => $request['unit'],
+                    'unit_cost' => $request['unit_cost'],
+                ]
+            );
+
+            return response()->json([
+                'status' => "Success",
+                'message' => "Successfully Added new Dupa"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage
+            ]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Dupa $dupa)
     {
-        //
+        $dupas = Dupa::find($dupa);
+
+        return response()->json($dupas);
     }
 
     /**
@@ -57,8 +84,20 @@ class DupaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Dupa $dupa)
     {
-        //
+        try {
+            $dupa->delete();
+
+            return response()->json([
+                'status' => "Success",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage
+            ]);
+        }
     }
 }
