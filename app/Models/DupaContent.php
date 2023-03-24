@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\DupaEquipment;
+use App\Models\DupaLabor;
+use App\Models\DupaMaterial;
 use App\Models\Dupa;
 
 class DupaContent extends Model
@@ -21,8 +23,13 @@ class DupaContent extends Model
     public function dupaEquipment() {
         return $this->hasMany(DupaEquipment::class, 'dupa_content_id', 'id');
     }
-
+    public function dupaLabor() {
+        return $this->hasMany(DupaLabor::class, 'dupa_content_id', 'id');
+    }
+    public function dupaMaterial() {
+        return $this->hasMany(DupaMaterial::class, 'dupa_content_id', 'id');
+    }
     public function dupa() {
-        return $this->hasMany(Dupa::class);
+        return $this->belongsTo(Dupa::class);
     }
 }

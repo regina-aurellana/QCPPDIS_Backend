@@ -11,6 +11,8 @@ use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ProjectNatureController;
 use App\Http\Controllers\ProjectNatureTypeController;
 use App\Http\Controllers\DupaLaborController;
+use App\Http\Controllers\DupaEquipmentController;
+use App\Http\Controllers\DupaMaterialController;
 
  
 Route::resource('dupa', DupaController::class);
@@ -30,3 +32,7 @@ Route::resource('nature', ProjectNatureController::class);
 Route::resource('type', ProjectNatureTypeController::class);
 
 Route::resource('dupalabor', DupaLaborController::class);
+
+Route::resource('dupaequipment', DupaEquipmentController::class);
+
+Route::resource('dupamaterial', DupaMaterialController::class);

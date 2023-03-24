@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\DupaLabor\DupaLaborRequest;
+use App\Http\Requests\DupaMaterial\AddDupaMaterialRequest;
 
-use App\Models\DupaLabor;
+use App\Models\DupaMaterial;
 
-class DupaLaborController extends Controller
+class DupaMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $dupa_labor = DupaLabor::with('labor')
-        ->with('dupaContent')
+        $dupa_material = DupaMaterial::with(['material', 'dupaContent'])
         ->get();
 
-        return response()->json($dupa_labor);
+        return response()->json($dupa_material);
     }
 
     /**
@@ -32,26 +31,24 @@ class DupaLaborController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DupaLaborRequest $request)
+    public function store(AddDupaMaterialRequest $request)
     {
         try {
-            DupaLaborRequest::updateOrCreate(
-                ['labor_id' => $request['labor_id']],
+            DupaMaterial::updateOrCreate(
+                ['material_id' => $request['material_id']],
                 [
                     'dupa_content_id' => $request['dupa_content_id'],
-                    'no_of_person' => $request['no_of_person'],
-                    'no_of_hour' => $request['no_of_hour'],
+                    'quantity' => $request['quantity'],
                 ]
             );
 
             return response()->json([
-                'status' => "SUCCESS",
-                'message' => "Successfully Added Dupa Labor"
+                'status' => 'Success',
+                'message' => 'Added Succesfully'
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => "Error",
+                'status' => 'Error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -60,19 +57,19 @@ class DupaLaborController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DupaLabor $dupalabor)
+    public function show(DupaMaterial $dupamaterial)
     {
-        $dupa_labor = DupaLabor::where('id', $dupalabor->id)
-            ->with([
-                'labor:id,designation',
-                'dupaContent' => function($q){
-                    $q->join('dupas', 'dupa_contents.dupa_id', '=', 'dupas.id')
-                    ->select('dupa_contents.*', 'description');
-                },
-            ])
-            ->get();
+        $dupa_material = DupaMaterial::where('id', $dupamaterial->id)
+        ->with([
+            'material', 
+            'dupaContent' => function ($q){
+                $q->join('dupas', 'dupa_contents.dupa_id', 'dupas.id')
+                ->select('dupa_contents.*', 'description');
+            },
+        ])
+        ->get();
 
-        return response()->json($dupa_labor);
+        return response()->json($dupa_material);
     }
 
     /**
@@ -94,22 +91,20 @@ class DupaLaborController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DupaLabor $dupalabor)
+    public function destroy(DupaMaterial $dupamaterial)
     {
         try {
-            $dupalabor->delete();
+            $dupamaterial->delete();
 
             return response()->json([
                 'status' => 'Success',
-                'message' => 'Deleted Successfully'
+                'message' => 'Deleted Succesfully'
             ]);
-        
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }
 }
-    

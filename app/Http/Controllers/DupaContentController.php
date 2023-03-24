@@ -13,7 +13,8 @@ class DupaContentController extends Controller
      */
     public function index()
     {
-        $dupa_content = DupaContent::get();
+        $dupa_content = DupaContent::with(['dupaEquipment', 'dupaLabor', 'dupaMaterial'])
+        ->get();
 
         return response()->json($dupa_content);
     }
@@ -53,7 +54,9 @@ class DupaContentController extends Controller
      */
     public function show(DupaContent $content)
     {
-        $dupa_content = DupaContent::find($content);
+        $dupa_content = DupaContent::where('id', $content->id)
+        ->with(['dupaEquipment', 'dupaLabor', 'dupaMaterial'])
+        ->get();
 
         return response()->json($dupa_content);
     }
