@@ -57,9 +57,8 @@ class ProjectNatureTypeController extends Controller
     
     public function show(ProjectNatureType $type)
     {
-        $nature_type = $type->with('projectNature')
-            ->where('project_nature_types.project_nature_id', $type->id)    
-            ->select('project_nature_types.name', 'project_nature_types.id')
+        $nature_type = $type->where('project_nature_types.project_nature_id', $type->id) 
+            ->with('projectNature')               
             ->get();
 
         return response()->json($nature_type);
@@ -95,7 +94,7 @@ class ProjectNatureTypeController extends Controller
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'Error',
+                'status' => 'Success',
                 'message' => $th->getMessage()
             ]);
         }
