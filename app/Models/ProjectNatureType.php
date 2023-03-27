@@ -23,6 +23,6 @@ class ProjectNatureType extends Model
         return $this->belongsTo(ProjectNature::class);
     }
     public function b3Project(){
-        return $this->belongsTo(B3Projects::class);
+        return $this->hasMany(B3Projects::class, 'project_nature_type_id', 'id');
     }
 }

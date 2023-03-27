@@ -13,13 +13,13 @@ class B3Projects extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $guarded = [];
 
     public function projectNature(){
-        return $this->hasOne(ProjectNature::class, 'project_nature_id', 'id');
+        return $this->belongsTo(ProjectNature::class);
     }
     public function projectNatureType(){
-        return $this->hasOne(ProjectNatureType::class, 'project_nature_type_id', 'id');
+        return $this->belongsTo(ProjectNatureType::class);
     }
 }

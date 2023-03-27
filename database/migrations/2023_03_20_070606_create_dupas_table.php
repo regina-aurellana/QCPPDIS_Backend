@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('unit_cost');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('subcategory_id')->references('id')->on('sow_sub_categories');
         });
     }
 

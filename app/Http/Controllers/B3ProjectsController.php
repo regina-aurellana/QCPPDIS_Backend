@@ -16,7 +16,7 @@ class B3ProjectsController extends Controller
     public function index()
     {
         $b3Projects = B3Projects::join('project_nature_types', 'project_nature_types.id', 'b3_projects.project_nature_type_id' )
-        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')        
+        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')
         ->select('b3_projects.id', 'b3_projects.registry_no', 'b3_projects.project_title', 'b3_projects.location', 'b3_projects.status', 'project_natures.name AS project_nature_id', 'project_nature_types.name As project_nature_type_id')
         ->get();
 
@@ -35,10 +35,10 @@ class B3ProjectsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(AddProjectRequest $request){
-		
+
         try {
 					if($request['registry_no'] == null){
-                        
+
 						$count =B3Projects::count();
 						$str = sprintf('%04d', ++$count );
 						$ded = "DED";
@@ -54,8 +54,8 @@ class B3ProjectsController extends Controller
 											'status' => $request['status'],
 									]
 						 );
-					} else{ 
-						
+					} else{
+
 						$proj = B3Projects::updateOrCreate(
 						['registry_no' => $request['registry_no']],
 								[
@@ -88,9 +88,9 @@ class B3ProjectsController extends Controller
     public function show(B3Projects $project)
     {
         $b3Projects = $project->join('project_nature_types', 'project_nature_types.id', 'b3_projects.project_nature_type_id' )
-        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')        
+        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')
         ->select('b3_projects.*', 'project_natures.name As project_nature', 'project_nature_types.name As project_nature_type')
-        ->where('b3_projects.id', $project->id) 
+        ->where('b3_projects.id', $project->id)
         ->first();
 
         return response()->json($b3Projects);
@@ -109,7 +109,7 @@ class B3ProjectsController extends Controller
      */
     public function update(UpdateProjectRequest $request, B3Projects $project)
     {
-       
+
     }
 
     /**

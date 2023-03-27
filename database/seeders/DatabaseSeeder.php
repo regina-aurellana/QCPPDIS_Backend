@@ -15,8 +15,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MaterialSeeder::class,
             LaborSeeder::class,
-            EquipmentSeeder::class,            
-            DupaSeeder::class,          
+            EquipmentSeeder::class,
+            SowCategorySeeder::class,
+            SowSubCategorySeeder::class,
+            DupaSeeder::class,
             DupaContentSeeder::class,
             DupaLaborSeeder::class,
             DupaEquipmentSeeder::class,
@@ -24,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ProjectNatureSeeder::class,
             ProjectNatureTypeSeeder::class,
             B3ProjectSeeder::class,
+            SubCatReferenceSeeder::class,
         ]);
     }
 }
