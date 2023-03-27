@@ -24,7 +24,7 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -42,7 +42,7 @@ class MaterialController extends Controller
                     'unit_cost' => $request['unit_cost'],
                 ]
             );
-    
+
             return response()->json([
                 'status' => "SUCCESS",
                 'message' => "Successfully Added Material"
@@ -56,12 +56,14 @@ class MaterialController extends Controller
         }
     }
 
-    /** 
+    /**
      * Display the specified resource.
      */
     public function show(Material $material)
     {
-        $mat = Material::find($material);
+        $mat = Material::where('id', $material->id)
+        ->select('item_code', 'name', 'unit', 'unit_cost')
+        ->first();
 
         return response()->json($mat);
     }
@@ -79,7 +81,7 @@ class MaterialController extends Controller
      */
     public function update(AddMaterialRequest $request, Material $material)
     {
-       
+
     }
 
     /**

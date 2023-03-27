@@ -13,8 +13,10 @@ use App\Http\Controllers\ProjectNatureTypeController;
 use App\Http\Controllers\DupaLaborController;
 use App\Http\Controllers\DupaEquipmentController;
 use App\Http\Controllers\DupaMaterialController;
+use App\Http\Controllers\SowSubCategoryController;
+use App\Http\Controllers\SowCategoryController;
 
- 
+
 Route::resource('dupa', DupaController::class);
 
 Route::resource('content', DupaContentController::class);
@@ -36,3 +38,7 @@ Route::resource('dupalabor', DupaLaborController::class);
 Route::resource('dupaequipment', DupaEquipmentController::class);
 
 Route::resource('dupamaterial', DupaMaterialController::class);
+
+Route::resource('subcat', SowSubCategoryController::class);
+
+Route::resource('sowcat', SowCategoryController::class);

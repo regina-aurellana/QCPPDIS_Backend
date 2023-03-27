@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\DupaMaterial;
+use App\Models\SowSubCategory;
 
-class Material extends Model
+class SowCategory extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -16,11 +16,11 @@ class Material extends Model
     protected $fillable = [
         'item_code',
         'name',
-        'unit',
-        'unit_cost',
     ];
 
-    public function dupaMaterial(){
-        return $this->hasMany(DupaMaterilal::class, 'material_id', 'id');
+    public function sowSubCategory(){
+        return $this->hasMany(SowSubCategory::class, 'sow_cat_id', 'id');
     }
+
+
 }
