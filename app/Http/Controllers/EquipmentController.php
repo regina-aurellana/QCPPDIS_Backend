@@ -34,8 +34,9 @@ class EquipmentController extends Controller
     {
         try {
             Equipment::updateOrCreate(
-                ['item_code' => $request['item_code']],
+                ['id' => $request['equipment_id']],
                 [
+                    'item_code' => $request['item_code'],
                     'name' => $request['name'],
                     'hourly_rate' => $request['hourly_rate']
 
@@ -59,7 +60,7 @@ class EquipmentController extends Controller
     public function show(Equipment $equipment)
     {
         $equipments = Equipment::where('id', $equipment->id)
-        ->select('item_code', 'name', 'hourly_rate')
+        ->select('id', 'item_code', 'name', 'hourly_rate')
         ->first();
 
        return response()->json($equipments);

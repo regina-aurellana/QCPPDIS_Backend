@@ -33,13 +33,14 @@ class LaborController extends Controller
      */
     public function store(AddLaborRequest $request)
     {
-       
+
         try {
             Labor::updateOrCreate(
-                ['item_code' => $request['item_code']],
+                ['id' => $request['labor_id']],
                     [
-                      'designation' => $request['designation'],        
-                    	'hourly_rate' => $request['hourly_rate'],
+                      'item_code' => $request['item_code'],
+                      'designation' => $request['designation'],
+                      'hourly_rate' => $request['hourly_rate'],
                     ]
             );
 
@@ -60,9 +61,11 @@ class LaborController extends Controller
      */
     public function show(Labor $labor)
     {
-        $labors = Labor::find($labor);
+        $labors = Labor::where('id', $labor->id)
+        ->select('id', 'item_code', 'designation', 'hourly_rate')
+        ->first();
 
-				return response()->json($labors);
+		return response()->json($labors);
     }
 
     /**
@@ -78,7 +81,7 @@ class LaborController extends Controller
      */
     public function update(UpdateLaborRequest $request, Labor $labor)
     {
-       
+
     }
 
     /**
