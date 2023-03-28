@@ -33,7 +33,7 @@ class EquipmentController extends Controller
     public function store(AddEquipmentRequest $request)
     {
         try {
-            Equipment::updateOrCreate(
+           $equip = Equipment::updateOrCreate(
                 ['id' => $request['equipment_id']],
                 [
                     'item_code' => $request['item_code'],
@@ -42,10 +42,18 @@ class EquipmentController extends Controller
 
                 ]
             );
+            if ($equip->wasRecentlyCreated) {
                 return response()->json([
-                    'status' => 'Success',
-                    'message' => 'Equipment Added'
+                    'status' => 'Created',
+                    'message' => 'Equipment Successfully Created'
                 ]);
+            }else{
+                return response()->json([
+                    'status' => 'Updated',
+                    'message' => 'Equipment Successfully Updated'
+                ]);
+            }
+
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'erroe',
@@ -91,7 +99,7 @@ class EquipmentController extends Controller
             $equipment->delete();
 
             return response()->json([
-                'status' => "SUCCESS",
+                'status' => "Deleted",
                 'message' => "Deleted Successfully"
             ]);
         } catch (\Throwable $th) {
