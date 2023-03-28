@@ -36,7 +36,7 @@ class MaterialController extends Controller
         try {
 
 
-            Material::updateOrCreate(
+           $mat =  Material::updateOrCreate(
                 ['id' => $request['material_id']],
 
                 [
@@ -46,11 +46,18 @@ class MaterialController extends Controller
                     'unit_cost' => $request['unit_cost'],
                 ]
             );
+            if ($mat->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => "Created",
+                    'message' => "Material Successfully Created"
+                ]);
+            }else{
+                return response()->json([
+                    'status' => "Updated",
+                    'message' => "Material Successfully Updated "
+                ]);
+            }
 
-            return response()->json([
-                'status' => "SUCCESS",
-                'message' => "Successfully Added Material"
-            ]);
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -97,7 +104,7 @@ class MaterialController extends Controller
             $material->delete();
 
             return response()->json([
-                'status' => "SUCCESS",
+                'status' => "Deleted",
                 'message' => "Deleted Successfully"
             ]);
         } catch (\Throwable $th) {

@@ -15,6 +15,7 @@ use App\Http\Controllers\DupaEquipmentController;
 use App\Http\Controllers\DupaMaterialController;
 use App\Http\Controllers\SowSubCategoryController;
 use App\Http\Controllers\SowCategoryController;
+use App\Http\Controllers\SubCatReferenceController;
 
 
 Route::resource('dupa', DupaController::class);
@@ -42,3 +43,5 @@ Route::resource('dupamaterial', DupaMaterialController::class);
 Route::resource('subcat', SowSubCategoryController::class);
 
 Route::resource('sowcat', SowCategoryController::class);
+
+Route::resource('reference', SubCatReferenceController::class);

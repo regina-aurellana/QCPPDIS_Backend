@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SowCategory\SowCategoryRequest;
 
-use App\Models\SowCategory;
+use App\Models\SubCatReference;
 
-class SowCategoryController extends Controller
+class SubCatReferenceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $sow_cat = SowCategory::with(['sowSubCategory.referenceParent'])
+        $subcat_ref = SubCatReference::with('parent', 'sowSubCategory')
         ->get();
 
-        return response()->json($sow_cat);
+        return response()->json($subcat_ref);
     }
 
     /**
@@ -39,9 +38,13 @@ class SowCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(SubCatReference $reference)
     {
-        //
+        $subcat_ref = SubCatReference::where('id', $reference->id)
+        ->with('parent', 'SubCategory')
+        ->get();
+
+        return response()->json($subcat_ref);
     }
 
     /**
