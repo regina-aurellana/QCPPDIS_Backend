@@ -32,11 +32,12 @@ class MaterialController extends Controller
      */
     public function store(AddMaterialRequest $request)
     {
+
         try {
 
 
             Material::updateOrCreate(
-                ['id' => $request['id']],
+                ['id' => $request['material_id']],
 
                 [
                     'item_code' => $request['item_code'],
@@ -65,7 +66,7 @@ class MaterialController extends Controller
     public function show(Material $material)
     {
         $mat = Material::where('id', $material->id)
-        ->select('item_code', 'name', 'unit', 'unit_cost')
+        ->select('id', 'item_code', 'name', 'unit', 'unit_cost')
         ->first();
 
         return response()->json($mat);
