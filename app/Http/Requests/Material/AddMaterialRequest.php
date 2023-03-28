@@ -22,6 +22,7 @@ class AddMaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => 'required',
             'item_code' => 'required',
             'name' => 'required',
             'unit' => 'required',

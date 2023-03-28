@@ -38,7 +38,7 @@ class EquipmentController extends Controller
                 [
                     'name' => $request['name'],
                     'hourly_rate' => $request['hourly_rate']
-                    
+
                 ]
             );
                 return response()->json([
@@ -58,7 +58,9 @@ class EquipmentController extends Controller
      */
     public function show(Equipment $equipment)
     {
-        $equipments = Equipment::find($equipment);
+        $equipments = Equipment::where('id', $equipment->id)
+        ->select('item_code', 'name', 'hourly_rate')
+        ->first();
 
        return response()->json($equipments);
     }
