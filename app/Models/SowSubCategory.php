@@ -27,12 +27,11 @@ class SowSubCategory extends Model
     public function dupa(){
         return $this->hasMany(Dupa::class, 'subcategory_id', 'id');
     }
-    public function subCatReference(){
+    public function reference(){
         return $this->hasMany(SubCatReference::class, 'sow_subcat_id', 'id');
     }
-    public function subCatReferenceParent(){
-        return $this->hasMany(SubCatReference::class, 'parent', 'id');
+    public function referenceParent(){
+        return $this->hasMany(SubCatReference::class, 'parent_id', 'id',);
     }
-
 
 }

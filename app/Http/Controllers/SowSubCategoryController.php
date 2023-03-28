@@ -13,7 +13,7 @@ class SowSubCategoryController extends Controller
      */
     public function index()
     {
-        $subcat = SowSubCategory::with('sowCategory')
+        $subcat = SowSubCategory::with('subCatReferenceAncestor')
         ->get();
 
         return response()->json($subcat);
@@ -41,7 +41,7 @@ class SowSubCategoryController extends Controller
     public function show(SowSubCategory $subcat)
     {
         $subcat = SowSubCategory::where('id', $subcat->id)
-        ->with('subCatReference')
+        ->with('referenceParent')
         ->first();
 
         return response()->json($subcat);

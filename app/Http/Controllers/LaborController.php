@@ -35,7 +35,7 @@ class LaborController extends Controller
     {
 
         try {
-            Labor::updateOrCreate(
+           $labor = Labor::updateOrCreate(
                 ['id' => $request['labor_id']],
                     [
                       'item_code' => $request['item_code'],
@@ -43,11 +43,19 @@ class LaborController extends Controller
                       'hourly_rate' => $request['hourly_rate'],
                     ]
             );
+            if ($labor->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'Created',
+                    'message' => 'Labor Successfully Created'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'Updated',
+                    'message' => 'Labor Successfully Updated'
+                ]);
+            }
 
-            return response()->json([
-                'status' => 'Success',
-                'message' => 'Labor Added'
-            ]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
@@ -93,7 +101,7 @@ class LaborController extends Controller
 					$labor->delete();
 
 					return response()->json([
-						'status' => "Success",
+						'status' => "Deleted",
 						'message' => 'Deleted Successfully'
 					]);
 
