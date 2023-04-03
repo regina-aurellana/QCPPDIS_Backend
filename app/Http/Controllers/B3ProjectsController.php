@@ -54,6 +54,11 @@ class B3ProjectsController extends Controller
 											'status' => $request['status'],
 									]
 						 );
+
+                         return response()->json([
+                            'status' => "Created",
+                            'message' => "Project Successfully Created "
+                        ]);
 					} else{
 
 						$proj = B3Projects::updateOrCreate(
@@ -66,13 +71,14 @@ class B3ProjectsController extends Controller
 										'status' => $request['status'],
 								]
 					 );
+                     return response()->json([
+                        'status' => "Updated",
+                        'message' => "Project Successfully Updated"
+                    ]);
 
 					}
 
-            return response()->json([
-                'status' => "SUCCESS",
-                'message' => "Successfully Added Project"
-            ]);
+
 
         } catch (\Throwable $th) {
             return response()->json([

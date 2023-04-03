@@ -70,7 +70,7 @@ class DupaLaborController extends Controller
                     ->select('dupa_contents.*', 'description');
                 },
             ])
-            ->get();
+            ->first();
 
         return response()->json($dupa_labor);
     }
@@ -103,7 +103,7 @@ class DupaLaborController extends Controller
                 'status' => 'Success',
                 'message' => 'Deleted Successfully'
             ]);
-        
+
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
@@ -112,4 +112,3 @@ class DupaLaborController extends Controller
         }
     }
 }
-    

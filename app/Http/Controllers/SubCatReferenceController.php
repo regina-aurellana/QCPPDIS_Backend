@@ -13,7 +13,7 @@ class SubCatReferenceController extends Controller
      */
     public function index()
     {
-        $subcat_ref = SubCatReference::with('parent', 'sowSubCategory')
+        $subcat_ref = SubCatReference::with('parent', 'SubCategory')
         ->get();
 
         return response()->json($subcat_ref);
@@ -40,9 +40,11 @@ class SubCatReferenceController extends Controller
      */
     public function show(SubCatReference $reference)
     {
-        $subcat_ref = SubCatReference::where('id', $reference->id)
-        ->with('parent', 'SubCategory')
-        ->get();
+        $subcat_ref = SubCatReference::where('sub_cat_references.id', $reference->id)
+        ->join('sow_sub_categories', 'sow_sub_categories.id', 'sub_cat_references.parent_id')
+        ->join()
+        ->select('sow_sub_categories.item_code')
+        ->first();
 
         return response()->json($subcat_ref);
     }

@@ -34,20 +34,28 @@ class DupaController extends Controller
     public function store(AddDupaRequest $request)
     {
         try {
-            Dupa::updateOrCreate(
-                ['item_number' => $request['item_number']],
+           $dupa = Dupa::updateOrCreate(
+                ['id' => $request['id']],
                 [
+                    'item_number' => $request['item_number'],
                     'subcategory_id' => $request['subcategory_id'],
                     'description' => $request['description'],
                     'unit' => $request['unit'],
                     'unit_cost' => $request['unit_cost'],
                 ]
             );
+            if ($dupa->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => "Created",
+                    'message' => "Dupa Successfully Created"
+                ]);
+            }else{
+                return response()->json([
+                    'status' => "Updated",
+                    'message' => "Dupa Successfully Updated "
+                ]);
+            }
 
-            return response()->json([
-                'status' => "Success",
-                'message' => "Successfully Added new Dupa"
-            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => "Error",
@@ -66,17 +74,17 @@ class DupaController extends Controller
             'dupaContent.dupaEquipment' => function($q){
                 $q->join('equipment', 'dupa_equipment.equipment_id', 'equipment.id')
                 ->select('dupa_equipment.*', 'name');
-            }, 
+            },
             'dupaContent.dupaLabor' => function($q){
                 $q->join('labors', 'dupa_labors.labor_id', 'labors.id')
                 ->select('dupa_labors.*', 'designation');
-            }, 
+            },
             'dupaContent.dupaMaterial' => function($q){
                 $q->join('materials', 'dupa_materials.material_id', 'materials.id')
                 ->select('dupa_materials.*', 'name');
             },
             ])
-        ->get();
+        ->first();
 
         return response()->json($dupa);
     }
