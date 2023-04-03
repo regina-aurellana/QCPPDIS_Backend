@@ -28,22 +28,22 @@ class SowSubCategorySeeder extends Seeder
             [
                 'item_code' => 'OGR0301',
                 'name' => 'electric meter/sub-meter, water meter/sub-meter, etc.',
-                'sow_cat_id' => '2',
+                'sow_cat_id' => null,
             ],
             [
                 'item_code' => 'OGR030101',
                 'name' => 'Temporary Facilities ',
-                'sow_cat_id' => '2',
+                'sow_cat_id' => null,
             ],
             [
                 'item_code' => 'AW01',
                 'name' => 'Temporary',
-                'sow_cat_id' => '3',
+                'sow_cat_id' => null,
             ],
             [
                 'item_code' => 'CSW0101',
                 'name' => 'Facilities ',
-                'sow_cat_id' => '4',
+                'sow_cat_id' => null,
             ],
         ];
 
