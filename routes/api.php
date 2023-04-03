@@ -45,3 +45,12 @@ Route::resource('subcat', SowSubCategoryController::class);
 Route::resource('sowcat', SowCategoryController::class);
 
 Route::resource('reference', SubCatReferenceController::class);
+
+Route::post('upload-material', [MaterialController::class, 'uploadMaterial']);
+Route::delete('revert-material', [MaterialController::class, 'revertMaterial']);
+Route::post('import-material', [MaterialController::class, 'import']);
+
+
+Route::post('upload-labor', [LaborController::class, 'uploadLabor']);
+Route::delete('revert-labor', [LaborController::class, 'revertLabor']);
+Route::post('import-labor', [LaborController::class, 'importLabor']);

@@ -27,6 +27,7 @@ class SubCatReferenceSeeder extends Seeder
                 'sow_subcat_id' => '6',
                 'parent_id' => '1',
             ],
+
         ];
 
         foreach ($subcat_ref as $subcat_refs) {

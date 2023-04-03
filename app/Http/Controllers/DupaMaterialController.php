@@ -61,13 +61,13 @@ class DupaMaterialController extends Controller
     {
         $dupa_material = DupaMaterial::where('id', $dupamaterial->id)
         ->with([
-            'material', 
+            'material',
             'dupaContent' => function ($q){
                 $q->join('dupas', 'dupa_contents.dupa_id', 'dupas.id')
                 ->select('dupa_contents.*', 'description');
             },
         ])
-        ->get();
+        ->first();
 
         return response()->json($dupa_material);
     }

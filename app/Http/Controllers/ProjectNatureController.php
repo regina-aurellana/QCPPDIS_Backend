@@ -27,7 +27,7 @@ class ProjectNatureController extends Controller
      */
     public function create()
     {
-       
+
     }
 
     /**

@@ -56,7 +56,7 @@ class DupaContentController extends Controller
     {
         $dupa_content = DupaContent::where('id', $content->id)
         ->with(['dupaEquipment', 'dupaLabor', 'dupaMaterial'])
-        ->get();
+        ->first();
 
         return response()->json($dupa_content);
     }

@@ -62,13 +62,13 @@ class DupaEquipmentController extends Controller
     {
         $dupa_equip = DupaEquipment::where('id', $dupaequipment->id)
         ->with([
-            'equipment', 
+            'equipment',
             'dupaContent' => function($q){
                 $q->join('dupas', 'dupa_contents.dupa_id', 'dupas.id')
                 ->select('dupa_contents.*', 'description');
             },
         ])
-        ->get();
+        ->first();
 
         return response()->json($dupa_equip);
     }

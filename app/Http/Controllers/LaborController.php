@@ -7,6 +7,10 @@ use App\Http\Requests\Labor\AddLaborRequest;
 use App\Http\Requests\Labor\UpdateLaborRequest;
 use App\Models\Labor;
 use Carbon\Carbon;
+use App\Models\TemporaryFile;
+use Illuminate\Support\Facades\Storage;
+use Spatie\SimpleExcel\SimpleExcelReader;
+use Illuminate\Support\LazyCollection;
 
 class LaborController extends Controller
 {
@@ -111,5 +115,102 @@ class LaborController extends Controller
 						'message' => $th->getMessage()
 					]);
 				}
+    }
+
+    public function uploadLabor(Request $request){
+        info('yey');
+        try {
+            if($request->hasFile('filepond')) {
+
+                $file = $request->file('filepond');
+                $folder = uniqid(). '-' .now()->timestamp;
+                $filename = $file->getClientOriginalName();
+
+                $file->storeAs('temp/'.$folder, $filename);
+
+                TemporaryFile::create([
+                    'filename' => $filename,
+                    'folder' => $folder
+                ]);
+
+                return $folder;
+            }
+
+            return '';
+
+        } catch (\Throwable $th) {
+            info($th->getMessage());
+        }
+    }
+
+    public function revertLabor(){
+
+        $folder = request()->getContent();
+
+        TemporaryFile::where('folder', $folder)->delete();
+        Storage::deleteDirectory('temp/'.$folder);
+
+        return '';
+
+    }
+
+    public function importLabor(Request $request){
+        try {
+            $file = request()->file('filepond');
+            $folder = uniqid(). '-' .now()->timestamp;
+
+            $filepath = $file->store('temp');
+
+            $rows = SimpleExcelReader::create(storage_path('app/'.$filepath))->getRows();
+            $collection = collect($rows->toArray());
+
+            $item_code = $collection->pluck('Labor Code');
+            $designation = $collection->pluck('Designation');
+            $hourly_rate = $collection->pluck('Hourly Rate');
+
+
+            for ($labor = 0; $labor < count($item_code); $labor++) {
+
+                $item_codes [] = $item_code[$labor];
+                $data [] = [
+                    'item_code' => $item_code[$labor],
+                    'designation' => $designation[$labor],
+                    'hourly_rate' => $hourly_rate[$labor]
+                ];
+            }
+
+            $existing_item_code = Labor::select('item_code')->whereIn('item_code', $item_code)->pluck('item_code');
+
+            foreach ($data as $insert) {
+
+                if (in_array($insert['item_code'], $existing_item_code->toArray())) {
+                    Labor::where('item_code', $insert['item_code'])->update([
+                        'item_code' => $insert['item_code'],
+                        'designation' => $insert['designation'],
+                        'hourly_rate' => $insert['hourly_rate'],
+                    ]);
+                }else{
+                    $data_to_insert[] = [
+                        'item_code' => $insert['item_code'],
+                        'designation' => $insert['designation'],
+                        'hourly_rate' => $insert['hourly_rate'],
+                        'created_at' => now(),
+                    ];
+                }
+            }
+
+            foreach (array_chunk($data_to_insert, 1000) as $data) {
+                Labor::insert($data);
+            }
+
+                return response()->json([
+                    'status' => "Success",
+                    'message' => "Imported Successfully"
+                ]);
+
+
+        } catch (\Throwable $th) {
+            info($th->getMessage());
+        }
     }
 }

@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sow_sub_categories', function (Blueprint $table) {
+        Schema::create('temporary_files', function (Blueprint $table) {
             $table->id();
-            $table->string('item_code');
-            $table->string('name');
-            $table->unsignedBigInteger('sow_cat_id')->nullable();
-            $table->softDeletes();
+            $table->string('filename');
+            $table->string('folder');
             $table->timestamps();
-
-            $table->foreign('sow_cat_id')->references('id')->on('sow_categories');
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sow_sub_categories');
+        Schema::dropIfExists('temporary_files');
     }
 };

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SowSubCategory\AddSowSubCategoryRequest;
+use App\Http\Requests\SowSubCategory\SowSubCategoryRequest;
 use App\Models\SowSubCategory;
 
 class SowSubCategoryController extends Controller
@@ -13,8 +13,7 @@ class SowSubCategoryController extends Controller
      */
     public function index()
     {
-        $subcat = SowSubCategory::with('subCatReferenceAncestor')
-        ->get();
+        $subcat = SowSubCategory::get();
 
         return response()->json($subcat);
     }
@@ -24,15 +23,43 @@ class SowSubCategoryController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SowSubCategoryRequest $request)
     {
-        //
+        try {
+            $subcat = SowSubCategory::updateOrCreate(
+                 ['id' => $request['sow_subcat_id']],
+                 [
+                     'item_code' => $request['item_code'],
+                     'name' => $request['name'],
+                     'sow_cat_id' => $request['sow_cat_id'],
+                 ]
+         );
+
+
+             if ($subcat->wasRecentlyCreated) {
+                 return response()->json([
+                     'status' => "Created",
+                     'message' => "SubCat Successfully Created"
+                 ]);
+             }else{
+                 return response()->json([
+                     'status' => "Updated",
+                     'message' => "SubCat Successfully Updated "
+                 ]);
+             }
+
+         } catch (\Throwable $th) {
+             return response()->json([
+                 'status' => "Error",
+                 'message' => $th->getMessage()
+             ]);
+         }
     }
 
     /**
@@ -41,7 +68,7 @@ class SowSubCategoryController extends Controller
     public function show(SowSubCategory $subcat)
     {
         $subcat = SowSubCategory::where('id', $subcat->id)
-        ->with('referenceParent')
+        ->with('reference')
         ->first();
 
         return response()->json($subcat);
