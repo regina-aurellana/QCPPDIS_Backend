@@ -4,33 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\DupaEquipment\DupaEquipmentRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\DupaEquipment;
 
 class DupaEquipmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $dupa_equip = DupaEquipment::with(['equipment', 'dupaContent'])
+        $dupa_equip = DupaEquipment::with(['equipment'])
         ->get();
+
 
         return response()->json($dupa_equip);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(DupaEquipmentRequest $request)
     {
         try {
@@ -55,43 +48,45 @@ class DupaEquipmentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(DupaEquipment $dupaequipment)
     {
-        $dupa_equip = DupaEquipment::where('id', $dupaequipment->id)
-        ->with([
-            'equipment',
-            'dupaContent' => function($q){
-                $q->join('dupas', 'dupa_contents.dupa_id', 'dupas.id')
-                ->select('dupa_contents.*', 'description');
-            },
+        // $dupa_equip = DupaEquipment::where('dupa_equipment.dupa_content_id', $dupaequipment->id)
+        // ->join('dupa_contents', 'dupa_contents.id', 'dupa_equipment.dupa_content_id')
+        // ->join('equipment', 'equipment.id', 'dupa_equipment.equipment_id')
+        // ->join(
+        //     DB::raw('(SELECT dupa_equipment.id, dupa_equipment.dupa_content_id,
+        //         dupa_equipment.no_of_unit, dupa_equipment.no_of_hour,
+        //         equipment.hourly_rate
+        //         FROM dupa_equipment
+        //         INNER JOIN equipment ON equipment.id = dupa_equipment.equipment_id) AS dupa_equipment_amount'),
+        //         'dupa_equipment_amount.id', '=', 'dupa_equipment.id')
+        //         ->select('dupa_equipment.*', 'equipment.hourly_rate', 'equipment.name', DB::raw('dupa_equipment_amount.no_of_unit * dupa_equipment_amount.no_of_hour * dupa_equipment_amount.hourly_rate AS amount'))
+        // ->get();
+
+
+        $dupa_equip = DupaEquipment::where('dupa_content_id', $dupaequipment->id)
+        ->with(['equipment' => function($q){
+            $q->select('dupa_equipment.id', 'equipment.hourly_rate', 'equipment.name', DB::raw('(dupa_equipment.no_of_unit * dupa_equipment.no_of_hour * equipment.hourly_rate) as equipment_amount'))
+              ->join('dupa_equipment', 'equipment.id', '=', 'dupa_equipment.equipment_id');
+        }
         ])
-        ->first();
+        ->get();
+
+
 
         return response()->json($dupa_equip);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(DupaEquipment $dupaequipment)
     {
         try {

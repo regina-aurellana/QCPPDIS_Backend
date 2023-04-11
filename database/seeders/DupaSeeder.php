@@ -20,15 +20,15 @@ class DupaSeeder extends Seeder
                 'item_number' => '800(3)a1',
                 'description' => 'Individual Removal of Trees (Small, 150mm Ø up to 300mm Ø)',
                 'unit' => 'each',
-                'unit_cost' => '1003.34',
+                'output_per_hour' => '500.00',
             ],
-            [	  	  	
+            [
 
                 'subcategory_id' => '2',
                 'item_number' => '803|(1)a',
                 'description' => 'Structure Excavation (Common Soil)',
                 'unit' => 'cum',
-                'unit_cost' => '269.98',
+                'output_per_hour' => '300.00',
             ],
         ];
 
@@ -38,7 +38,7 @@ class DupaSeeder extends Seeder
                 'item_number' => $dupas['item_number'],
                 'description' => $dupas['description'],
                 'unit' => $dupas['unit'],
-                'unit_cost' => $dupas['unit_cost'],
+                'output_per_hour' => $dupas['output_per_hour'],
             ]);
         }
     }

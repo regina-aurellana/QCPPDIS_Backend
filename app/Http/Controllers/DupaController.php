@@ -41,7 +41,7 @@ class DupaController extends Controller
                     'subcategory_id' => $request['subcategory_id'],
                     'description' => $request['description'],
                     'unit' => $request['unit'],
-                    'unit_cost' => $request['unit_cost'],
+                    'output_per_hour' => $request['output_per_hour'],
                 ]
             );
             if ($dupa->wasRecentlyCreated) {
