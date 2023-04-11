@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('item_number');
             $table->string('description');
             $table->string('unit');
-            $table->string('unit_cost');
+            $table->string('output_per_hour');
             $table->softDeletes();
             $table->timestamps();
 

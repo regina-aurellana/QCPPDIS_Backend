@@ -26,7 +26,7 @@ class AddDupaRequest extends FormRequest
             'item_number' => 'required',
             'description' => 'required',
             'unit' => 'required',
-            'unit_cost' => 'required',
+            'output_per_hour' => 'required',
         ];
     }
 }
