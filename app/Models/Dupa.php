@@ -18,7 +18,7 @@ class Dupa extends Model
         'item_number',
         'description',
         'unit',
-        'unit_cost',
+        'output_per_hour',
     ];
 
     public function dupaContent(){

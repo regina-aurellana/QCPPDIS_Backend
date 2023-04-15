@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\DupaLabor\DupaLaborRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\DupaLabor;
 
 class DupaLaborController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $dupa_labor = DupaLabor::with('labor')
@@ -21,17 +20,13 @@ class DupaLaborController extends Controller
         return response()->json($dupa_labor);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(DupaLaborRequest $request)
     {
         try {
@@ -57,43 +52,33 @@ class DupaLaborController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(DupaLabor $dupalabor)
     {
-        $dupa_labor = DupaLabor::where('id', $dupalabor->id)
+        $dupa_labor = DupaLabor::where('dupa_content_id', $dupalabor->id)
             ->with([
-                'labor:id,designation',
-                'dupaContent' => function($q){
-                    $q->join('dupas', 'dupa_contents.dupa_id', '=', 'dupas.id')
-                    ->select('dupa_contents.*', 'description');
-                },
+                'labor' => function($q){
+                    $q->select('dupa_labors.id', 'labors.designation', 'labors.hourly_rate', DB::raw('(dupa_labors.no_of_person * dupa_labors.no_of_hour * labors.hourly_rate) as labor_amount'))
+                    ->join('dupa_labors', 'labors.id', '=', 'dupa_labors.labor_id');
+                }
             ])
-            ->first();
+            ->get();
 
         return response()->json($dupa_labor);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(DupaLabor $dupalabor)
     {
         try {
