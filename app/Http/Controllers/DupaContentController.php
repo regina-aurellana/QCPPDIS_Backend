@@ -61,11 +61,6 @@ class DupaContentController extends Controller
             ])
         ->first();
 
-        $e_output_per_hour = Dupa::where('id', $content->dupa_id)
-            ->select('output_per_hour')
-            ->first()
-            ->output_per_hour;
-
         // Get the total sum of dupaLabor
         $a_dupaLabor_Total = round($dupa_content->dupaLabor->sum('labor_amount'), 2);
 
@@ -77,6 +72,12 @@ class DupaContentController extends Controller
 
         // Get Direct unit cost (C / D)
         $d_direct_unit_cost_c_d = round($c_total_ab / $e_output_per_hour, 2);
+
+        // Get the Output per hour
+        $e_output_per_hour = Dupa::where('id', $content->dupa_id)
+            ->select('output_per_hour')
+            ->first()
+            ->output_per_hour;
 
         // Get the total sum of dupaMaterial
         $f_dupaMaterial_Total =round( $dupa_content->dupaMaterial->sum('material_amount'), 2);

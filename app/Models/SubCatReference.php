@@ -18,11 +18,16 @@ class SubCatReference extends Model
         'parent_id',
     ];
 
-    public function SubCategory(){
-        return $this->belongsTo(SowSubCategory::class, 'sow_subcat_id');
-    }
-    public function parent(){
-        return $this->belongsTo(SowSubCategory::class, 'parent_id');
+    // public function SubCategory(){
+    //     return $this->belongsTo(SowSubCategory::class, 'sow_subcat_id', 'id');
+    // }
+    // public function parentSubcategory(){
+    //     return $this->belongsTo(SowSubCategory::class, 'parent_id', 'id');
+    // }
+
+    public function parentSubCategory()
+    {
+        return $this->belongsTo(SowSubCategory::class, 'parent_id', 'id');
     }
 
 

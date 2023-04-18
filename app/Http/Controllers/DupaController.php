@@ -71,18 +71,19 @@ class DupaController extends Controller
     {
         $dupa = Dupa::where('id', $dupa->id)
         ->with([
-            'dupaContent.dupaEquipment' => function($q){
-                $q->join('equipment', 'dupa_equipment.equipment_id', 'equipment.id')
-                ->select('dupa_equipment.*', 'name');
-            },
-            'dupaContent.dupaLabor' => function($q){
-                $q->join('labors', 'dupa_labors.labor_id', 'labors.id')
-                ->select('dupa_labors.*', 'designation');
-            },
-            'dupaContent.dupaMaterial' => function($q){
-                $q->join('materials', 'dupa_materials.material_id', 'materials.id')
-                ->select('dupa_materials.*', 'name');
-            },
+            'measures:id,name,abbreviation',
+            // 'dupaContent.dupaEquipment' => function($q){
+            //     $q->join('equipment', 'dupa_equipment.equipment_id', 'equipment.id')
+            //     ->select('dupa_equipment.*', 'name');
+            // },
+            // 'dupaContent.dupaLabor' => function($q){
+            //     $q->join('labors', 'dupa_labors.labor_id', 'labors.id')
+            //     ->select('dupa_labors.*', 'designation');
+            // },
+            // 'dupaContent.dupaMaterial' => function($q){
+            //     $q->join('materials', 'dupa_materials.material_id', 'materials.id')
+            //     ->select('dupa_materials.*', 'name');
+            // },
             ])
         ->first();
 

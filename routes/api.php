@@ -16,6 +16,7 @@ use App\Http\Controllers\DupaMaterialController;
 use App\Http\Controllers\SowSubCategoryController;
 use App\Http\Controllers\SowCategoryController;
 use App\Http\Controllers\SubCatReferenceController;
+use App\Http\Controllers\UnitOfMeasurementController;
 
 
 Route::resource('dupa', DupaController::class);
@@ -45,6 +46,8 @@ Route::resource('subcat', SowSubCategoryController::class);
 Route::resource('sowcat', SowCategoryController::class);
 
 Route::resource('reference', SubCatReferenceController::class);
+
+Route::resource('measurement', UnitOfMeasurementController::class);
 
 Route::post('upload-material', [MaterialController::class, 'uploadMaterial']);
 Route::delete('revert-material', [MaterialController::class, 'revertMaterial']);
