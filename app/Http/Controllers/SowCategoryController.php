@@ -14,7 +14,7 @@ class SowCategoryController extends Controller
      */
     public function index()
     {
-        $sow_cat = SowCategory::with('sowSubCategory.reference.SubCategory.reference.SubCategory')
+        $sow_cat = SowCategory::with('sowSubCategory')
         ->get();
 
         return response()->json($sow_cat);
