@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dupa_contents', function (Blueprint $table) {
+        Schema::create('category_dupas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dupa_id');
-            $table->softDeletes();
+            $table->string('name');
             $table->timestamps();
-
-            $table->foreign('dupa_id')->references('id')->on('dupas');   
-
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dupa_contents');
+        Schema::dropIfExists('category_dupas');
     }
 };

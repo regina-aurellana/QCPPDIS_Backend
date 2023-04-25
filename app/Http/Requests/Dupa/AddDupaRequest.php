@@ -25,8 +25,10 @@ class AddDupaRequest extends FormRequest
             'subcategory_id' => 'required',
             'item_number' => 'required',
             'description' => 'required',
-            'unit' => 'required',
+            'unit_id' => 'required',
+            'category_dupa_id' => 'required',
             'output_per_hour' => 'required',
+
         ];
     }
 }
