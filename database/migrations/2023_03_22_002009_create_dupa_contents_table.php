@@ -9,25 +9,25 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('dupa_categories', function (Blueprint $table) {
+        Schema::create('dupa_contents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('dupa_id');
-            $table->unsignedBigInteger('nature_id');
+            $table->string('direct_unit_cost')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('dupa_id')->references('id')->on('dupas');
-            $table->foreign('nature_id')->references('id')->on('project_natures');
+
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('dupa_categories');
+        Schema::dropIfExists('dupa_contents');
     }
 };

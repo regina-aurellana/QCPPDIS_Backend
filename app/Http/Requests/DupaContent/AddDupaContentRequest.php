@@ -23,6 +23,7 @@ class AddDupaContentRequest extends FormRequest
     {
         return [
             'dupa_id' => 'required',
+            'direct_unit_cost',
         ];
     }
 }
