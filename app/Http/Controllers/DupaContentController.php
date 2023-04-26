@@ -131,9 +131,21 @@ class DupaContentController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function destroy(DupaContent $content)
     {
-        //
+        try {
+            $content->delete();
+
+            return response()->json([
+                'status' => "Success",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
 }
