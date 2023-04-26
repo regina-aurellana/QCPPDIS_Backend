@@ -28,6 +28,7 @@ class AddDupaRequest extends FormRequest
             'unit_id' => 'required',
             'category_dupa_id' => 'required',
             'output_per_hour' => 'required',
+            'direct_unit_cost' => 'nullable',
 
         ];
     }

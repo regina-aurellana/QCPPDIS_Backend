@@ -20,7 +20,7 @@ class Dupa extends Model
         'subcategory_id',
         'item_number',
         'description',
-        'unit',
+        'unit_id',
         'category_dupa_id',
         'output_per_hour',
     ];

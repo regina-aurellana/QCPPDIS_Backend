@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('dupa_contents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('dupa_id');
-            $table->string('direct_unit_cost')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
