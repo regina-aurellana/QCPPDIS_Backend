@@ -16,14 +16,15 @@ return new class extends Migration
             $table->unsignedBigInteger('subcategory_id');
             $table->string('item_number');
             $table->string('description');
-            $table->string('unit_id');
+            $table->unsignedBigInteger('unit_id');
             $table->string('output_per_hour');
             $table->unsignedBigInteger('category_dupa_id');
+            $table->string('direct_unit_cost')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('subcategory_id')->references('id')->on('sow_sub_categories');
-            // $table->foreign('unit_id')->references('id')->on('unit_of_measurements');
+            $table->foreign('unit_id')->references('id')->on('unit_of_measurements');
             $table->foreign('category_dupa_id')->references('id')->on('category_dupas');
         });
     }

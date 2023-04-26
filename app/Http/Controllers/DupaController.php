@@ -20,10 +20,9 @@ class DupaController extends Controller
 
         $dupa = CategoryDupa::join('dupas', 'category_dupas.id', 'dupas.category_dupa_id')
             ->join('unit_of_measurements', 'unit_of_measurements.id', 'dupas.unit_id')
-            ->join('dupa_contents', 'dupas.id', 'dupa_contents.dupa_id')
             ->join('sow_sub_categories', 'sow_sub_categories.id', 'dupas.subcategory_id')
-            ->select('dupas.id', 'dupas.item_number', 'sow_sub_categories.name as scope_of_work_subcategory', 'dupas.description', 'unit_of_measurements.abbreviation', 'dupa_contents.direct_unit_cost', 'category_dupas.name as dupa_category')
-            ->orderBy('category_dupas.id')
+            ->select('dupas.id', 'dupas.item_number', 'sow_sub_categories.name as scope_of_work_subcategory', 'dupas.description', 'unit_of_measurements.abbreviation', 'dupas.direct_unit_cost', 'category_dupas.name as dupa_category')
+            ->orderBy('dupas.id')
             ->paginate(10);
 
 
@@ -82,10 +81,8 @@ class DupaController extends Controller
         $dupa = Dupa::where('dupas.id', $dupa->id)
         ->join('unit_of_measurements', 'unit_of_measurements.id', 'dupas.unit_id')
         ->join('category_dupas', 'category_dupas.id', 'dupas.category_dupa_id')
-        ->join('dupa_contents', 'dupas.id', 'dupa_contents.dupa_id')
-        ->select('dupas.item_number', 'dupas.description', 'dupas.output_per_hour', 'unit_of_measurements.abbreviation', 'dupa_contents.direct_unit_cost', 'category_dupas.name as dupa_category')
+        ->select('dupas.item_number', 'dupas.description', 'dupas.output_per_hour', 'unit_of_measurements.abbreviation', 'dupas.direct_unit_cost', 'category_dupas.name as dupa_category')
         ->first();
-
 
         return response()->json($dupa);
     }
@@ -180,8 +177,9 @@ class DupaController extends Controller
         // Get Total unit Cost (G + H + I + J)
         $k_total_unit_cost = round($g_direct_unit_cost_e_f + $h_ocm + $i_contractors_profit + $j_vat, 2);
 
-        $dupa_content->direct_unit_cost = $k_total_unit_cost;
-        $dupa_content->save();
+        $dupa = $dupa_content->dupa;
+        $dupa->direct_unit_cost = $k_total_unit_cost;
+        $dupa->save();
 
         }
     }
