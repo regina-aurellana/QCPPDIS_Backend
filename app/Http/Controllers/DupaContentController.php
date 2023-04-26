@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\DB;
 class DupaContentController extends Controller
 {
 
-
-
-
     public function index()
     {
         $dupa_content = DupaContent::with(['dupaEquipment', 'dupaLabor', 'dupaMaterial'])
@@ -41,7 +38,7 @@ class DupaContentController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }
@@ -100,8 +97,8 @@ class DupaContentController extends Controller
         // Get Total unit Cost (G + H + I + J)
         $k_total_unit_cost = round($g_direct_unit_cost_e_f + $h_ocm + $i_contractors_profit + $j_vat, 2);
 
-        $dupa_content->direct_unit_cost = $k_total_unit_cost;
-        $dupa_content->save();
+        // $dupa_content->direct_unit_cost = $k_total_unit_cost;
+        // $dupa_content->save();
 
         return response()->json([
             'dupa_content' => $dupa_content,
