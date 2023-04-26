@@ -61,3 +61,4 @@ Route::post('import-labor', [LaborController::class, 'importLabor']);
 Route::post('upload-equipment', [EquipmentController::class, 'uploadEquipment']);
 Route::delete('revert-equipment', [EquipmentController::class, 'revertEquipment']);
 Route::post('import-equipment', [EquipmentController::class, 'importEquipment']);
+

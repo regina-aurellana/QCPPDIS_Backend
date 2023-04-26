@@ -18,6 +18,7 @@ class DupaContent extends Model
 
     protected $fillable = [
         'dupa_id',
+
     ];
 
     public function dupaEquipment() {

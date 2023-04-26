@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\DupaContent;
 use App\Models\UnitOfMeasurement;
 use App\Models\DupaCategory;
+use App\Models\ProjectNature;
 
 class Dupa extends Model
 {
@@ -19,8 +20,8 @@ class Dupa extends Model
         'subcategory_id',
         'item_number',
         'description',
-        'unit_id',
-        'direct_unit_cost',
+        'unit',
+        'category_dupa_id',
         'output_per_hour',
     ];
 
@@ -32,14 +33,4 @@ class Dupa extends Model
         return $this->hasOne(UnitOfMeasurement::class, 'id');
     }
 
-    public function dupaCategory(){
-        return $this->belongsToMany(DupaCategory::class, 'dupa_categories', 'dupa_id', 'nature_id');
-    }
-
-    public function isBothVerticalAndHorizontal()
-    {
-        $categoryNames = $this->dupaCategory()->pluck('name')->toArray();
-
-        return in_array('Vertical', $categoryNames) && in_array('Horizontal', $categoryNames);
-    }
 }
