@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\ProjectNatureType;
 use App\Models\B3Projects;
+use App\Models\Dupa;
 
 
 class ProjectNature extends Model
@@ -23,6 +24,7 @@ class ProjectNature extends Model
         return $this->hasMany(ProjectNatureType::class, 'project_nature_id', 'id');
     }
     public function b3Project(){
-        return $this->haMany(B3Projects::class, 'project_nature_id', 'id');
+        return $this->hasMany(B3Projects::class, 'project_nature_id', 'id');
     }
+
 }

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\Dupa\AddDupaContentRequest;
+use App\Http\Requests\DupaContent\AddDupaContentRequest;
 use App\Models\DupaContent;
 use App\Models\Dupa;
 use Illuminate\Support\Facades\DB;
 
 class DupaContentController extends Controller
 {
+
     public function index()
     {
         $dupa_content = DupaContent::with(['dupaEquipment', 'dupaLabor', 'dupaMaterial'])
@@ -23,7 +24,7 @@ class DupaContentController extends Controller
         //
     }
 
-    public function store(DupaContentRequest $request)
+    public function store(AddDupaContentRequest $request)
     {
         try {
             DupaContent::updateOrCreate([
@@ -37,7 +38,7 @@ class DupaContentController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }
@@ -61,8 +62,8 @@ class DupaContentController extends Controller
             ])
         ->first();
 
-        $e_output_per_hour = Dupa::where('id', $content->dupa_id)
-            ->select('output_per_hour')
+        // Get the Output per hour
+        $e_output_per_hour = Dupa::find($content)
             ->first()
             ->output_per_hour;
 
@@ -96,6 +97,8 @@ class DupaContentController extends Controller
         // Get Total unit Cost (G + H + I + J)
         $k_total_unit_cost = round($g_direct_unit_cost_e_f + $h_ocm + $i_contractors_profit + $j_vat, 2);
 
+        // $dupa_content->direct_unit_cost = $k_total_unit_cost;
+        // $dupa_content->save();
 
         return response()->json([
             'dupa_content' => $dupa_content,
@@ -113,47 +116,6 @@ class DupaContentController extends Controller
         ]);
 
 
-
-        // $dupa_content = DupaContent::where('id', $content->id)
-        // ->with([
-        //     'dupaEquipment' => function($q){
-        //         $q->join('equipment', 'equipment.id', '=', 'dupa_equipment.equipment_id')
-        //           ->join(DB::raw('(SELECT dupa_equipment.id, dupa_equipment.dupa_content_id,
-        //                                   dupa_equipment.no_of_unit, dupa_equipment.no_of_hour,
-        //                                   equipment.hourly_rate
-        //                            FROM dupa_equipment
-        //                            INNER JOIN equipment ON equipment.id = dupa_equipment.equipment_id) AS dupa_equipment_amount'),
-        //                  'dupa_equipment_amount.id', '=', 'dupa_equipment.id')
-        //           ->select('dupa_equipment.*', 'equipment.hourly_rate', 'equipment.name', DB::raw('dupa_equipment_amount.no_of_unit * dupa_equipment_amount.no_of_hour * dupa_equipment_amount.hourly_rate AS amount'));
-        //     },
-        //     'dupaLabor'=> function($r){
-        //         $r->join('labors', 'labors.id', '=', 'dupa_labors.labor_id')
-        //           ->join(DB::raw('(SELECT dupa_labors.id, dupa_labors.dupa_content_id,
-        //                                   dupa_labors.no_of_person, dupa_labors.no_of_hour,
-        //                                   labors.hourly_rate
-        //                            FROM dupa_labors
-        //                            INNER JOIN labors ON labors.id = dupa_labors.labor_id) AS dupa_labors_amount'),
-        //                  'dupa_labors_amount.id', '=', 'dupa_labors.id')
-        //           ->select('dupa_labors.*', 'labors.hourly_rate', 'labors.designation', DB::raw('dupa_labors_amount.no_of_person * dupa_labors_amount.no_of_hour * dupa_labors_amount.hourly_rate AS amount'));
-        //     },
-        //     'dupaMaterial'])
-        // ->first();
-
-
-
-
-        // $dupa_content = DupaContent::where('dupa_contents.id', $content->id)
-        // ->join(
-        //     DB::raw('(
-        //         SELECT dupa_equipment.dupa_content_id, dupa_equipment.equipment_id,dupa_equipment.no_of_unit, dupa_equipment.no_of_hour, equipment.hourly_rate, equipment.name, (dupa_equipment.no_of_unit * dupa_equipment.no_of_hour * equipment.hourly_rate) as amount FROM dupa_equipment
-        //         INNER JOIN equipment ON equipment.id = dupa_equipment.equipment_id
-        //     ) AS dupa_equipment'),
-        //     'dupa_contents.id', 'dupa_equipment.dupa_content_id'
-        // )
-        // ->select('dupa_equipment.*')
-        // ->get();
-
-
     }
 
 
@@ -169,8 +131,21 @@ class DupaContentController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function destroy(DupaContent $content)
     {
-        //
+        try {
+            $content->delete();
+
+            return response()->json([
+                'status' => "Success",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
+
 }

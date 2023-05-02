@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             EquipmentSeeder::class,
             SowCategorySeeder::class,
             SowSubCategorySeeder::class,
+            UnitOfMeasurementSeeder::class,
+            CategoryDupaSeeder::class,
             DupaSeeder::class,
             DupaContentSeeder::class,
             DupaLaborSeeder::class,

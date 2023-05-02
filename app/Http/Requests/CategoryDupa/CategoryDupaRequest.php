@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dupa;
+namespace App\Http\Requests\CategoryDupa;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddDupaRequest extends FormRequest
+class CategoryDupaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,7 @@ class AddDupaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subcategory_id' => 'required',
-            'item_number' => 'required',
-            'description' => 'required',
-            'unit_id' => 'required',
-            'category_dupa_id' => 'required',
-            'output_per_hour' => 'required',
-            'direct_unit_cost' => 'nullable',
-
+            'name' => 'required',
         ];
     }
 }

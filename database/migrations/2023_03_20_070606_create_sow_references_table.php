@@ -9,24 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('dupa_contents', function (Blueprint $table) {
+        Schema::create('sow_references', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dupa_id');
-            $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('dupa_id')->references('id')->on('dupas');   
-
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('dupa_contents');
+        Schema::dropIfExists('sow_references');
     }
 };
