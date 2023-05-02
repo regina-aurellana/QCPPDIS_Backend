@@ -54,11 +54,11 @@ class ProjectNatureTypeController extends Controller
             ]);
         }
     }
-    
+
     public function show(ProjectNatureType $type)
     {
-        $nature_type = $type->where('project_nature_types.project_nature_id', $type->id) 
-            ->with('projectNature')               
+        $nature_type = $type->where('project_nature_types.project_nature_id', $type->id)
+            ->with('projectNature')
             ->get();
 
         return response()->json($nature_type);
@@ -69,7 +69,7 @@ class ProjectNatureTypeController extends Controller
      */
     public function edit()
     {
-        
+
     }
 
     /**
@@ -83,10 +83,10 @@ class ProjectNatureTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProjectNatureType $nature)
+    public function destroy(ProjectNatureType $type)
     {
         try {
-            $nature->delete();
+            $type->delete();
 
             return response()->json([
                 'status' => 'Success',

@@ -56,7 +56,7 @@ class DupaContentController extends Controller
                   ->join('labors', 'labors.id', '=', 'dupa_labors.labor_id');
             },
             'dupaMaterial' => function($s){
-                $s->select('dupa_content_id', 'dupa_materials.*', 'dupa_materials.quantity', 'materials.unit_cost', DB::raw('(dupa_materials.quantity * materials.unit_cost) as material_amount'))
+                $s->select('dupa_content_id', 'dupa_materials.*', 'dupa_materials.quantity', 'materials.name', 'materials.unit_cost', DB::raw('(dupa_materials.quantity * materials.unit_cost) as material_amount'))
                 ->join('materials', 'materials.id', '=', 'dupa_materials.material_id');
             }
             ])

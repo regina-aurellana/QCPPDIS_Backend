@@ -15,7 +15,7 @@ class UnitOfMeasurementController extends Controller
      */
     public function index()
     {
-       $measure = UnitOfMeasurement::get();
+        $measure = UnitOfMeasurement::get();
 
         return response()->json($measure);
     }
@@ -35,12 +35,24 @@ class UnitOfMeasurementController extends Controller
     {
         try {
 
-            UnitOfMeasurement::updateOrCreate(
-                ['name' => $request['name']],
-                ['abbreviation' => $request['abbreviation'],]
+            $mes = UnitOfMeasurement::updateOrCreate(
+                ['id' => $request['measurement_id']],
+                [
+                    'name' => $request['name'],
+                    'abbreviation' => $request['abbreviation'],
+                ]
             );
-
-
+            if ($mes->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => "Created",
+                    'message' => "Material Successfully Created"
+                ]);
+            } else {
+                return response()->json([
+                    'status' => "Updated",
+                    'message' => "Material Successfully Updated "
+                ]);
+            }
         } catch (\Throwable $th) {
             info($th->getMessage());
         }
@@ -52,8 +64,8 @@ class UnitOfMeasurementController extends Controller
     public function show(UnitOfMeasurement $measurement)
     {
         $measure = UnitOfMeasurement::where('id', $measurement->id)
-        ->with('dupa')
-        ->first();
+            ->with('dupa')
+            ->first();
 
         return response()->json($measure);
     }
