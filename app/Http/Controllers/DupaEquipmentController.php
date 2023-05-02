@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\DupaEquipment\DupaEquipmentRequest;
+use App\Http\Requests\DupaEquipment\AddDupaEquipmentRequest;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\DupaEquipment;
@@ -24,7 +24,7 @@ class DupaEquipmentController extends Controller
         //
     }
 
-    public function store(DupaEquipmentRequest $request)
+    public function store(AddDupaEquipmentRequest $request)
     {
         try {
             DupaEquipment::updateOrCreate(
