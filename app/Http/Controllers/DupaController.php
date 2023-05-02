@@ -81,7 +81,8 @@ class DupaController extends Controller
         $dupa = Dupa::where('dupas.id', $dupa->id)
         ->join('unit_of_measurements', 'unit_of_measurements.id', 'dupas.unit_id')
         ->join('category_dupas', 'category_dupas.id', 'dupas.category_dupa_id')
-        ->select('dupas.item_number', 'dupas.description', 'dupas.output_per_hour', 'unit_of_measurements.abbreviation', 'dupas.direct_unit_cost', 'category_dupas.name as dupa_category')
+        ->join('sow_sub_categories', 'sow_sub_categories.id', 'dupas.subcategory_id')
+        ->select('dupas.*', 'unit_of_measurements.abbreviation','category_dupas.name as dupa_category', 'sow_sub_categories.name as sow_subcategory')
         ->first();
 
         return response()->json($dupa);
