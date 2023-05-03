@@ -35,20 +35,45 @@ class ProjectNatureController extends Controller
     public function store(AddProjectNatureRequest $request)
     {
         try {
-            ProjectNature::updateOrCreate([
-                'name' => $request['name'],
-            ]);
-
-            return response()->json([
-                'status' => "SUCCESS",
-                'message' => "Successfully Added Project Nature"
-            ]);
+            $mes = ProjectNature::updateOrCreate(
+                ['id' => $request['projNature_id']],
+                [
+                    'name' => $request['name'],
+                ]
+            );
+            if($mes->wasRecentlyCreated){
+                return response()->json([
+                    'status' => "SUCCESS",
+                    'message' => "Successfully Added Project Nature"
+                ]);
+            }else{
+                return response()->json([
+                    'status' => "Updated",
+                    'message' => "Project Nature Successfully Updated "
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => "Error",
                 'message' => $th->getMessage()
             ]);
         }
+
+        // try {
+        //     ProjectNature::updateOrCreate([
+        //         'name' => $request['name'],
+        //     ]);
+
+        //     return response()->json([
+        //         'status' => "SUCCESS",
+        //         'message' => "Successfully Added Project Nature"
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'status' => "Error",
+        //         'message' => $th->getMessage()
+        //     ]);
+        // }
     }
 
     /**
