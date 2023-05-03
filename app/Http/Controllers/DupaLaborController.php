@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\DupaLabor\DupaLaborRequest;
+use App\Http\Requests\DupaLabor\AddDupaLaborRequest;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\DupaLabor;
@@ -27,10 +27,10 @@ class DupaLaborController extends Controller
     }
 
 
-    public function store(DupaLaborRequest $request)
+    public function store(AddDupaLaborRequest $request)
     {
         try {
-            DupaLaborRequest::updateOrCreate(
+            DupaLabor::updateOrCreate(
                 ['labor_id' => $request['labor_id']],
                 [
                     'dupa_content_id' => $request['dupa_content_id'],
