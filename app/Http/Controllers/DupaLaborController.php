@@ -92,7 +92,7 @@ class DupaLaborController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }
