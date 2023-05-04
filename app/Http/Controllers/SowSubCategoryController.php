@@ -13,7 +13,8 @@ class SowSubCategoryController extends Controller
      */
     public function index()
     {
-        $subcat = SowSubCategory::with('references')
+        $subcat = SowSubCategory::leftJoin('sow_categories', 'sow_categories.id', 'sow_sub_categories.sow_cat_id')
+        ->select('sow_sub_categories.*', 'sow_categories.name as sow_cat_name')
         ->get();
 
         return response()->json($subcat);
