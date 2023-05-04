@@ -61,7 +61,7 @@ class EquipmentController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'erroe',
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }
@@ -109,7 +109,7 @@ class EquipmentController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => "Error",
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }

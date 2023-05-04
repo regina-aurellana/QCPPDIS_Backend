@@ -50,7 +50,7 @@ class ProjectNatureTypeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => "SUCCESS",
-                'message' => $th->getMessage
+                'message' => $th->getMessage()
             ]);
         }
     }

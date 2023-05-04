@@ -94,8 +94,20 @@ class SowSubCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SowSubCategory $subcat)
     {
-        //
+        try {
+            $subcat->delete();
+
+            return response()->json([
+                'status' => "Deleted",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }
