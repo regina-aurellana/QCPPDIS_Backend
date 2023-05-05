@@ -70,7 +70,7 @@ class SowCategoryController extends Controller
     { //get child of sow category
         $sow_cat = SowCategory::leftJoin('sow_sub_categories', 'sow_categories.id', 'sow_sub_categories.sow_cat_id')
         ->leftJoin('sub_cat_references', 'sow_sub_categories.id', 'sub_cat_references.parent_id')
-        ->select('sow_categories.item_code as sowcat_item_code', 'sow_sub_categories.item_code as subcat_item_code', 'sub_cat_references.sow_subcat_id')
+        ->select('sow_categories.item_code as sowcat_item_code', 'sow_categories.name as sowcat_name')
         ->where('sow_categories.id', $sowcat->id)
         ->get();
 
