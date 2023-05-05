@@ -69,8 +69,9 @@ class SowSubCategoryController extends Controller
      */
     public function show(SowSubCategory $subcat)
     {
-        $subcat = SowSubCategory::where('id', $subcat->id)
-        ->with('parentSubcategory')
+        $subcat = SowSubCategory::where('sow_sub_categories.id', $subcat->id)
+        ->join('sow_categories', 'sow_categories.id', 'sow_sub_categories.sow_cat_id')
+        ->select('sow_sub_categories.*', 'sow_categories.name as sow_cat_name')
         ->first();
 
         return response()->json($subcat);
