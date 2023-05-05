@@ -34,8 +34,8 @@ class SowCategoryController extends Controller
     public function store(SowCategoryRequest $request)
     {
         try {
-           $sub_cat = SowCategory::updateOrCreate(
-                ['id' => $request['sow_cat_id']],
+           $sow_cat = SowCategory::updateOrCreate(
+                ['id' => $request['id']],
                 [
                     'item_code' => $request['item_code'],
                     'name' => $request['name'],
