@@ -11,7 +11,7 @@ class SowCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class SowCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'item_code' => 'required',
+            'name' => 'required',
         ];
     }
 }
