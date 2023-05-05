@@ -35,7 +35,7 @@ class SowSubCategoryController extends Controller
     {
         try {
             $subcat = SowSubCategory::updateOrCreate(
-                 ['id' => $request['sow_subcat_id']],
+                 ['id' => $request['id']],
                  [
                      'item_code' => $request['item_code'],
                      'name' => $request['name'],
@@ -52,7 +52,7 @@ class SowSubCategoryController extends Controller
              }else{
                  return response()->json([
                      'status' => "Updated",
-                     'message' => "SubCat Successfully Updated "
+                     'message' => "SubCat Successfully Updated"
                  ]);
              }
 
