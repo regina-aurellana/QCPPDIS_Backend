@@ -99,4 +99,14 @@ class ProjectNatureTypeController extends Controller
             ]);
         }
     }
+
+    public function typeList(ProjectNatureType $type)
+    {
+        $nature_type = ProjectNatureType::where('project_nature_types.id', $type->id)
+        ->join('project_natures', 'project_natures.id', 'project_nature_types.project_nature_id')
+        ->select('project_nature_types.*', 'project_natures.name as project_nature_name')
+        ->first();
+
+        return response()->json($nature_type);
+    }
 }

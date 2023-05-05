@@ -35,6 +35,7 @@ Route::resource('equipment', EquipmentController::class);
 Route::resource('nature', ProjectNatureController::class);
 
 Route::resource('type', ProjectNatureTypeController::class);
+Route::get('type-list/{type}', [ProjectNatureTypeController::class, 'typeList']);
 
 Route::resource('dupalabor', DupaLaborController::class);
 
