@@ -13,7 +13,9 @@ class DupaLaborController extends Controller
 
     public function index()
     {
-        $dupa_labor = DupaLabor::get();
+        $dupa_labor = DupaLabor::with('labor')
+        ->with('dupaContent')
+        ->get();
 
         return response()->json($dupa_labor);
     }
