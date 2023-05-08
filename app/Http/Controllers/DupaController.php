@@ -18,7 +18,7 @@ class DupaController extends Controller
 
         $this->computeDirectUnitCost();
 
-        $dupa = CategoryDupa::join('dupas', 'category_dupas.id', 'dupas.category_dupa_id')
+        $dupa = Dupa::join('category_dupas', 'category_dupas.id', 'dupas.category_dupa_id')
             ->join('unit_of_measurements', 'unit_of_measurements.id', 'dupas.unit_id')
             ->join('sow_sub_categories', 'sow_sub_categories.id', 'dupas.subcategory_id')
             ->select('dupas.id', 'dupas.item_number', 'sow_sub_categories.name as scope_of_work_subcategory', 'dupas.description', 'unit_of_measurements.abbreviation', 'dupas.direct_unit_cost', 'category_dupas.name as dupa_category')
@@ -53,6 +53,9 @@ class DupaController extends Controller
                 ]
             );
             if ($dupa->wasRecentlyCreated) {
+
+                DupaContent::create(['dupa_id' => $dupa->id]);
+
                 return response()->json([
                     'status' => "Created",
                     'message' => "Dupa Successfully Created"
@@ -110,6 +113,9 @@ class DupaController extends Controller
     public function destroy(Dupa $dupa)
     {
         try {
+
+            $dupa->dupaContent()->delete();
+
             $dupa->delete();
 
             return response()->json([

@@ -13,9 +13,7 @@ class DupaLaborController extends Controller
 
     public function index()
     {
-        $dupa_labor = DupaLabor::with('labor')
-        ->with('dupaContent')
-        ->get();
+        $dupa_labor = DupaLabor::get();
 
         return response()->json($dupa_labor);
     }
@@ -30,6 +28,7 @@ class DupaLaborController extends Controller
     public function store(AddDupaLaborRequest $request)
     {
         try {
+
             DupaLabor::updateOrCreate(
                 ['labor_id' => $request['labor_id']],
                 [
@@ -55,14 +54,14 @@ class DupaLaborController extends Controller
 
     public function show(DupaLabor $dupalabor)
     {
-        $dupa_labor = DupaLabor::where('dupa_content_id', $dupalabor->id)
+        $dupa_labor = DupaLabor::where('id', $dupalabor->id)
             ->with([
                 'labor' => function($q){
                     $q->select('dupa_labors.id', 'labors.designation', 'labors.hourly_rate', DB::raw('(dupa_labors.no_of_person * dupa_labors.no_of_hour * labors.hourly_rate) as labor_amount'))
                     ->join('dupa_labors', 'labors.id', '=', 'dupa_labors.labor_id');
                 }
             ])
-            ->get();
+            ->first();
 
         return response()->json($dupa_labor);
     }

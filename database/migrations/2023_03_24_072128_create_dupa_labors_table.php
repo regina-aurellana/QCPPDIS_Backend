@@ -17,12 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('labor_id');
             $table->string('no_of_person');
             $table->string('no_of_hour');
-            $table->softDeletes();
+            // $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('dupa_content_id')->references('id')->on('dupa_contents');
             $table->foreign('labor_id')->references('id')->on('labors');
-            
+
 
         });
     }
