@@ -52,14 +52,14 @@ class DupaMaterialController extends Controller
 
     public function show(DupaMaterial $dupamaterial)
     {
-        $dupa_material = DupaMaterial::where('dupa_content_id', $dupamaterial->id)
+        $dupa_material = DupaMaterial::where('id', $dupamaterial->id)
         ->with([
             'material' => function($q){
                 $q->select('materials.id', 'materials.unit_cost', 'materials.name', DB::raw('(dupa_materials.quantity * materials.unit_cost) as material_amount'))
                     ->join('dupa_materials', 'materials.id', '=', 'dupa_materials.material_id');
             }
         ])
-        ->get();
+        ->first();
 
         return response()->json($dupa_material);
     }

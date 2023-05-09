@@ -19,7 +19,7 @@ class SowCategory extends Model
     ];
 
     public function sowSubCategory(){
-        return $this->hasMany(SowSubCategory::class, 'sow_cat_id', 'id');
+        return $this->hasMany(SowSubCategory::class, 'sow_category_id', 'id');
     }
 
 

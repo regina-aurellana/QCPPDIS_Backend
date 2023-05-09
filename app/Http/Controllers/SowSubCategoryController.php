@@ -13,11 +13,21 @@ class SowSubCategoryController extends Controller
      */
     public function index()
     {
-        $subcat = SowSubCategory::leftJoin('sow_categories', 'sow_categories.id', 'sow_sub_categories.sow_cat_id')
+        $subcat = SowSubCategory::leftJoin('sow_categories', 'sow_categories.id', 'sow_sub_categories.sow_category_id')
         ->select('sow_sub_categories.*', 'sow_categories.name as sow_cat_name')
         ->get();
 
         return response()->json($subcat);
+    }
+
+    public function test($subcat){
+        $categories = $subcat->children;
+
+        foreach ($categories as $category) {
+            $category->children = $this->test($category);
+        }
+
+        return $categories;
     }
 
     /**
@@ -34,6 +44,31 @@ class SowSubCategoryController extends Controller
     public function store(SowSubCategoryRequest $request)
     {
         try {
+            /*
+            $category_id = $request->category_id;
+
+            $subcat = SowSubCategory::create([
+                'item_code' => $request['item_code'],
+                'name' => $request['name'],
+                'sow_cat_id' => $request['sow_category_id'],
+            ]);
+
+            SowReference::create([
+                'parent_sow_sub_category_id' => $category_id,
+                'sow_sub_category_id' => $subcat->id
+            ]);
+
+            fetch subcategory
+            $main_category = SowCategory::find(1)->with('sowSubCategory');
+
+            fetch all subsub from main_sub_category
+            $main_sub_category = SowSubCategory::where('id', 2)->first();
+            $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
+
+            fetch subsub
+            $subcat = SowSubCategory::where('id', $id)->with('children')->get();
+
+            */
             $subcat = SowSubCategory::updateOrCreate(
                  ['id' => $request['id']],
                  [
@@ -69,6 +104,7 @@ class SowSubCategoryController extends Controller
      */
     public function show(SowSubCategory $subcat)
     {
+
         $subcat = SowSubCategory::where('id', $subcat->id)
         ->with('Subcategory')
         ->first();

@@ -52,13 +52,13 @@ class DupaEquipmentController extends Controller
     public function show(DupaEquipment $dupaequipment)
     {
 
-        $dupa_equip = DupaEquipment::where('dupa_content_id', $dupaequipment->id)
+        $dupa_equip = DupaEquipment::where('id', $dupaequipment->id)
         ->with(['equipment' => function($q){
             $q->select('dupa_equipment.id', 'equipment.hourly_rate', 'equipment.name', DB::raw('(dupa_equipment.no_of_unit * dupa_equipment.no_of_hour * equipment.hourly_rate) as equipment_amount'))
               ->join('dupa_equipment', 'equipment.id', '=', 'dupa_equipment.equipment_id');
         }
         ])
-        ->get();
+        ->first();
 
 
 

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\SubCatReference;
+use App\Models\SowReference;
 
 class SubCatReferenceSeeder extends Seeder
 {
@@ -16,25 +16,33 @@ class SubCatReferenceSeeder extends Seeder
     {
         $subcat_ref = [
             [
-                'sow_subcat_id' => '3',
-                'parent_id' => '2',
+                'parent_sow_sub_category_id' => '2',
+                'sow_sub_category_id' => '3',
             ],
             [
-                'sow_subcat_id' => '4',
-                'parent_id' => '3',
+                'parent_sow_sub_category_id' => '3',
+                'sow_sub_category_id' => '4',
             ],
             [
-                'sow_subcat_id' => '6',
-                'parent_id' => '1',
+                'parent_sow_sub_category_id' => '3',
+                'sow_sub_category_id' => '5',
+            ],
+            [
+                'parent_sow_sub_category_id' => '5',
+                'sow_sub_category_id' => '6',
+            ],
+            [
+                'parent_sow_sub_category_id' => '5',
+                'sow_sub_category_id' => '7',
+            ],
+            [
+                'parent_sow_sub_category_id' => '1',
+                'sow_sub_category_id' => '9',
             ],
 
         ];
 
-        foreach ($subcat_ref as $subcat_refs) {
-            SubCatReference::create([
-                'sow_subcat_id' => $subcat_refs['sow_subcat_id'],
-                'parent_id' => $subcat_refs['parent_id'],
-            ]);
-        }
+        SowReference::insert($subcat_ref);
+
     }
 }

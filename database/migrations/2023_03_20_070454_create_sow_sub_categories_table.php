@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('item_code');
             $table->string('name');
-            $table->unsignedBigInteger('sow_cat_id')->nullable();
+            $table->unsignedBigInteger('sow_category_id')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('sow_cat_id')->references('id')->on('sow_categories');
+            $table->foreign('sow_category_id')->references('id')->on('sow_categories');
+
+            $table->index('sow_category_id');
         });
     }
 
