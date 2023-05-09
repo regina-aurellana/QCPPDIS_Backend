@@ -45,12 +45,12 @@ class UnitOfMeasurementController extends Controller
             if ($mes->wasRecentlyCreated) {
                 return response()->json([
                     'status' => "Created",
-                    'message' => "Material Successfully Created"
+                    'message' => "Measurement Successfully Created"
                 ]);
             } else {
                 return response()->json([
                     'status' => "Updated",
-                    'message' => "Material Successfully Updated "
+                    'message' => "Measurement Successfully Updated "
                 ]);
             }
         } catch (\Throwable $th) {
