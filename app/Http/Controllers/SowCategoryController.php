@@ -14,8 +14,7 @@ class SowCategoryController extends Controller
      */
     public function index()
     {
-        $sow_cat = SowCategory::with('sowSubCategory')
-        ->get();
+        $sow_cat = SowCategory::get();
 
         return response()->json($sow_cat);
     }
@@ -67,12 +66,9 @@ class SowCategoryController extends Controller
      * Display the specified resource.
      */
     public function show(SowCategory $sowcat)
-    { //get child of sow category
-        $sow_cat = SowCategory::leftJoin('sow_sub_categories', 'sow_categories.id', 'sow_sub_categories.sow_cat_id')
-        ->leftJoin('sub_cat_references', 'sow_sub_categories.id', 'sub_cat_references.parent_id')
-        ->select('sow_categories.item_code as sowcat_item_code', 'sow_categories.name as sowcat_name')
-        ->where('sow_categories.id', $sowcat->id)
-        ->get();
+    {
+        $sow_cat = SowCategory::where('sow_categories.id', $sowcat->id)
+        ->first();
 
         return response()->json($sow_cat);
     }

@@ -41,8 +41,24 @@ class SowSubCategory extends Model
         );
     }
 
+    public function parentSubCategory()
+    {
+        return $this->hasManyThrough(
+            SowSubCategory::class,
+            SowReference::class,
+            'sow_sub_category_id',
+            'id',
+            'id',
+            'parent_sow_sub_category_id',
+        );
+    }
+
     public function reference() {
         return $this->hasMany(SowReference::class, 'parent_sow_sub_category_id', 'id');
+    }
+
+    public function references() {
+        return $this->hasMany(SowReference::class, 'sow_sub_category_id', 'id');
     }
 
     public function getAllChildrenSubCategory($subcat){

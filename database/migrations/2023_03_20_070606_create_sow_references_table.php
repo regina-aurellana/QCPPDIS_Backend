@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_sow_sub_category_id')->nullable();
             $table->unsignedBigInteger('sow_sub_category_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('parent_sow_sub_category_id')->references('id')->on('sow_sub_categories');

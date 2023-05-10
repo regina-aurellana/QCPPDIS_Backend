@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SOftDeletes;
 
 use App\Models\SowSubCategory;
 
 class SowReference extends Model
 {
-    use HasFactory;
+    use HasFactory, SOftDeletes;
 
     protected $guarded = [];
 
