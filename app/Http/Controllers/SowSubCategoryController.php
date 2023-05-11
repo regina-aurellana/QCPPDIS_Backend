@@ -9,45 +9,38 @@ use App\Models\SowReference;
 
 class SowSubCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        $subcat = SowSubCategory::with('parentSubCategory')
-        ->with('sowCategory')
-        ->get();
+        // $subcat = SowSubCategory::with('parentSubCategory')
+        // ->with('sowCategory')
+        // ->get();
 
-        return response()->json($subcat);
+        // return response()->json($subcat);
 
 
-        // $main_sub_category = SowSubCategory::where('id', 2)->first();
-        // $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
+        $main_sub_category = SowSubCategory::where('id', 1)->first();
+        $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
 
-        // return $data;
+        return $data;
     }
 
-    public function test($subcat){
-        $categories = $subcat->children;
+    // public function test($subcat){
+    //     $categories = $subcat->children;
 
-        foreach ($categories as $category) {
-            $category->children = $this->test($category);
-        }
+    //     foreach ($categories as $category) {
+    //         $category->children = $this->test($category);
+    //     }
 
-        return $categories;
-    }
+    //     return $categories;
+    // }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(SowSubCategoryRequest $request)
     {
         try {
@@ -119,9 +112,7 @@ class SowSubCategoryController extends Controller
          }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(SowSubCategory $subcat)
     {
 
@@ -133,25 +124,18 @@ class SowSubCategoryController extends Controller
         return response()->json($subcat);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(SowSubCategory $subcat)
     {
         try {

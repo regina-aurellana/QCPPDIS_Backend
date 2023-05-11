@@ -85,24 +85,4 @@ class SowSubCategory extends Model
 
 
 
-    // public function subCatReference()
-    // {
-    //     return $this->hasMany(SubCatReference::class, 'subcat_id', 'id');
-    // }
-
-    // public function descendants()
-    // {
-    //     return $this->subCatReference()->with('parentSubCategory')->with('descendants');
-    // }
-
-    // public function references(){
-    //     return $this->hasMany(SubCatReference::class, 'sow_subcat_id', 'id');
-    // }
-
-
-
-
-
-
-
 }
