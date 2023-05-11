@@ -74,7 +74,7 @@ class SowSubCategoryController extends Controller
                  [
                      'item_code' => $request['item_code'],
                      'name' => $request['name'],
-                     'sow_cat_id' => $request['sow_cat_id'],
+                     'sow_category_id' => $request['sow_category_id'],
                  ]
          );
 

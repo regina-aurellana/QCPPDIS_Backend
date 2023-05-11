@@ -24,7 +24,6 @@ class SowSubCategoryRequest extends FormRequest
         return [
             'item_code' => 'required',
             'name' => 'required',
-            'sow_cat_id' => 'required',
         ];
     }
 }
