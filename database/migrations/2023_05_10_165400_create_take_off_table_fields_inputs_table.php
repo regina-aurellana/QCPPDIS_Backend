@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('take_off_table_fields_inputs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('take_off_table_field_id');
+            $table->string('row_no');
             $table->string('value');
             $table->timestamps();
 

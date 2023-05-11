@@ -13,7 +13,13 @@ class TakeOffTable extends Model
 
     protected $guarded = [];
 
-    public function b3Projects(){
-        return $this->belongsTo(B3Projects::class, 'id');
+    public function takeOff(){
+        return $this->belongsTo(TakeOff::class, 'id');
     }
+
+    public function takeOffTableFields(){
+        return $this->hasMany(TakeOffTableFields::class, 'take_off_id', 'id');
+    }
+
+
 }
