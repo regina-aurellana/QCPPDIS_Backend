@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\ProjectNature;
 use App\Models\ProjectNatureType;
+use App\Models\TakeOff;
 
 class B3Projects extends Model
 {
@@ -21,5 +22,9 @@ class B3Projects extends Model
     }
     public function projectNatureType(){
         return $this->belongsTo(ProjectNatureType::class);
+    }
+
+    public function takeOff(){
+        return $this->hasOne(TakeOff::class, 'b3_project_id', 'id');
     }
 }
