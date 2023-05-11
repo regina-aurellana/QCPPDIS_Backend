@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TakeOff\TakeOffRequest;
 use App\Models\TakeOff;
+use App\Models\B3Projects;
 
 class TakeOffController extends Controller
 {
@@ -13,9 +14,14 @@ class TakeOffController extends Controller
      */
     public function index()
     {
-        $take_off = TakeOff::with('b3Projects')->get();
+        $take_off = B3Projects::with('takeOff')->get();
 
         return response()->json($take_off);
+
+        // $test = "10+20/5+(10-5)";
+        // $result = eval("return $test;");
+        // return $result;
+
     }
 
     /**
@@ -59,9 +65,13 @@ class TakeOffController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(B3Projects $take_off)
     {
-        //
+        $take_off = B3Projects::where('id', $take_off->id)
+        ->with('takeOff')
+        ->first();
+
+        return response()->json($take_off);
     }
 
     /**

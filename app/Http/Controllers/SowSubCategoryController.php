@@ -19,8 +19,9 @@ class SowSubCategoryController extends Controller
         // return response()->json($subcat);
 
 
-        $main_sub_category = SowSubCategory::where('id', 1)->first();
+        $main_sub_category = SowSubCategory::where('id', 2)->first();
         $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
+
 
         return $data;
     }

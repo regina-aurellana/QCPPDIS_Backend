@@ -69,6 +69,7 @@ class SowSubCategory extends Model
         }
 
         return $categories;
+
     }
 
     // public function subSubCategory() {
