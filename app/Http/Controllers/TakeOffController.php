@@ -39,7 +39,7 @@ class TakeOffController extends Controller
     {
         try {
 
-            TakeOff::updateOrCreate(
+           $take_off = TakeOff::updateOrCreate(
                 ['b3_project_id' => $request['b3_project_id']],
                 [
                     'limit' => $request['limit'],
@@ -47,12 +47,17 @@ class TakeOffController extends Controller
                 ]
         );
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Take-Off Created'
-        ]);
-
-
+        if($take_off->wasRecentlyCreated){
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'Take-Off Created'
+            ]);
+        } else{
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'Take-Off Updated'
+            ]);
+        }
 
         } catch (\Throwable $th) {
             return response()->json([

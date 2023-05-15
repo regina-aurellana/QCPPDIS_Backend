@@ -17,8 +17,8 @@ class TakeOffTable extends Model
         return $this->belongsTo(TakeOff::class, 'id');
     }
 
-    public function takeOffTableFields(){
-        return $this->hasMany(TakeOffTableFields::class, 'take_off_id', 'id');
+    public function takeOffTableField(){
+        return $this->hasMany(TakeOffTableFields::class, 'take_off_table_id', 'id');
     }
 
 

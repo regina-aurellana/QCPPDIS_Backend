@@ -22,6 +22,7 @@ class TakeOffTableFieldsInputsRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'row_no' => 'required',
             'take_off_table_field_id' => 'required',
             'value' => 'required',
         ];

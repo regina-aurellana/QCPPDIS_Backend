@@ -13,7 +13,7 @@ class TakeOffTableController extends Controller
     public function index()
     {
 
-        $table_field = TakeOffTable::get();
+        $table_field = TakeOffTable::with('takeOffTableField.measurement')->get();
 
         return $table_field;
 
@@ -38,7 +38,7 @@ class TakeOffTableController extends Controller
     public function store(TakeOffTableRequest $request)
     {
         try {
-            TakeOffTable::updateOrCreate(
+            $take_off_table = TakeOffTable::updateOrCreate(
                 ['take_off_id' => $request['take_off_id']],
                 [
                     'sow_category_id' => $request['take_off_id'],
@@ -46,10 +46,17 @@ class TakeOffTableController extends Controller
                 ]
             );
 
-            return response()->json([
-                'status' => 'Success',
-                'message' => 'New Take-off table Created',
-            ]);
+            if($take_off_table->wasRecentlyCreated){
+                return response()->json([
+                    'status' => 'Success',
+                    'message' => 'Take-Off Table Created'
+                ]);
+            } else{
+                return response()->json([
+                    'status' => 'Success',
+                    'message' => 'Take-Off Table Updated'
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
@@ -61,9 +68,11 @@ class TakeOffTableController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(TakeOffTable $take_off_table)
     {
-        //
+        $table_field = TakeOffTable::where('id', $take_off_table->id)->with('takeOffTableField.measurement')->first();
+
+        return $table_field;
     }
 
     /**
