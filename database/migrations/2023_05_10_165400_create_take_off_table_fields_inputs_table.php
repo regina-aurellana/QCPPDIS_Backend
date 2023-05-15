@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('take_off_table_field_id');
             $table->string('row_no');
             $table->string('value');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('take_off_table_field_id')->references('id')->on('take_off_table_fields');

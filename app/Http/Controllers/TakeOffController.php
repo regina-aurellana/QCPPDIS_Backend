@@ -14,7 +14,11 @@ class TakeOffController extends Controller
      */
     public function index()
     {
-        $take_off = B3Projects::with('takeOff')->get();
+        $take_off = B3Projects::with(['takeOff.takeOffTable.takeOffTableField' => function($q){
+            $q->join('unit_of_measurements', 'unit_of_measurements.id', '=', 'take_off_table_fields.measurement_id')
+            ->join('take_off_table_fields_inputs', 'take_off_table_fields_inputs.id', 'take_off_table_fields_inputs.take_off_table_field_id')
+            ->select('take_off_table_fields.*', 'unit_of_measurements.name as measurement_name', 'take_off_table_fields_inputs.*');
+        }])->get();
 
         return response()->json($take_off);
 
@@ -98,8 +102,20 @@ class TakeOffController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TakeOff $take_off)
     {
-        //
+        try {
+            $take_off->delete();
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'Deleted Successfully'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'Success',
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

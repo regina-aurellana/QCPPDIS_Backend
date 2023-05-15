@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('b3_project_id');
             $table->string('limit');
             $table->string('length');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('b3_project_id')->references('id')->on('b3_projects');

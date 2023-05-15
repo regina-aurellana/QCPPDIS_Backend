@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('take_off_table_id');
             $table->string('formula');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('take_off_table_id')->references('id')->on('take_off_tables');

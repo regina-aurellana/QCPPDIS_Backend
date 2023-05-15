@@ -26,26 +26,61 @@ class SowCategoryController extends Controller
     public function store(SowCategoryRequest $request)
     {
         try {
-           $sow_cat = SowCategory::updateOrCreate(
-                ['id' => $request['id']],
-                [
-                    'item_code' => $request['item_code'],
-                    'name' => $request['name'],
-                ]
-        );
+
+            if($request->name){
+                $sow_req = $request->name;
+
+                //CHECK IF $request->name EXISTS
+                $sow_req_exists = SowCategory::withTrashed()->where('name', $sow_req)->get();
+
+                if($sow_req_exists){
+                    $hasDuplicates = false;
+                    foreach($sow_req_exists->pluck('deleted_at') as $sow_req_exist)
+                        if(!$sow_req_exist)
+                            $hasDuplicates = true;
 
 
-            if ($sow_cat->wasRecentlyCreated) {
-                return response()->json([
-                    'status' => "Created",
-                    'message' => "SOW Successfully Created"
-                ]);
-            }else{
-                return response()->json([
-                    'status' => "Updated",
-                    'message' => "SOW Successfully Updated "
-                ]);
+                //RETURN ERROR IF HAS DUPLICATE
+                if($hasDuplicates)
+
+                return back()->with('error',$sow_req_exists->pluck('name')->toArray() . ' already exists.');
+                //RESTORE IF NO OTHER DUPLICATES OTHER THAN TRASH
+                else
+                    foreach($sow_req_exists as $data_to_restore)
+                    $data_to_restore->restore();
+
+                    return response()->json([
+                        'status' => "Restored",
+                        'message' => "We've found the same category name from the database and restored it for you."
+                    ]);
+
+                }
+
+                if( !in_array( $sow_req, $sow_req_exists->pluck('name')->toArray() ))
+                {
+                    $sow_cat = SowCategory::updateOrCreate(
+                                ['id' => $request['id']],
+                                [
+                                    'item_code' => $request->item_code,
+                                    'name' => $sow_req,
+                                ]
+                        );
+
+                        if ($sow_cat->wasRecentlyCreated) {
+                                    return response()->json([
+                                        'status' => "Created",
+                                        'message' => "SOW Successfully Created"
+                                    ]);
+                                }else{
+                                    return response()->json([
+                                        'status' => "Updated",
+                                        'message' => "SOW Successfully Updated "
+                                    ]);
+                                }
+                }
+
             }
+
 
         } catch (\Throwable $th) {
             return response()->json([
