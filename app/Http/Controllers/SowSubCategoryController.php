@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\SowSubCategory\SowSubCategoryRequest;
 use App\Models\SowSubCategory;
+use App\Models\SowCategory;
 use App\Models\SowReference;
 
 class SowSubCategoryController extends Controller
@@ -12,18 +13,24 @@ class SowSubCategoryController extends Controller
 
     public function index()
     {
-        // $subcat = SowSubCategory::with('parentSubCategory')
-        // ->with('sowCategory')
+        // $subcat = SowCategory::with('sowSubCategory')
         // ->get();
 
         // return response()->json($subcat);
 
 
-        $main_sub_category = SowSubCategory::where('id', 2)->first();
+        // $main_sub_category = SowSubCategory::where('id', 2)->first();
+        // $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
+
+
+        // return $data;
+
+        $main_sub_category = SowSubCategory::where('id', 11)->first();
         $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
 
 
         return $data;
+
     }
 
     // public function test($subcat){
@@ -78,14 +85,6 @@ class SowSubCategoryController extends Controller
             $subcat = SowSubCategory::where('id', $id)->with('children')->get();
 
             */
-        //     $subcat = SowSubCategory::updateOrCreate(
-        //          ['id' => $request['id']],
-        //          [
-        //              'item_code' => $request['item_code'],
-        //              'name' => $request['name'],
-        //              'sow_cat_id' => $request['sow_cat_id'],
-        //          ]
-        //  );
 
 
              if ($subcat->wasRecentlyCreated) {
@@ -116,13 +115,21 @@ class SowSubCategoryController extends Controller
 
     public function show(SowSubCategory $subcat)
     {
-
+        // DISPLAY SOW CATEGORY AND PARENT SUBCATEGORY
         $subcat = SowSubCategory::where('id', $subcat->id)
         ->with('parentSubCategory')
         ->with('sowCategory')
         ->first();
 
         return response()->json($subcat);
+
+        // // DISPLAY ALL CHILDREN SUBCATEGORY OF A SOWCAT ID
+
+        // $main_category = SowCategory::where('id', $subcat->id)->first();
+        // $main_data = $main_category->sowSubCategory()->first();
+        // $main_data->getAllChildrenSubCategory($main_data);
+
+        // return $main_data;
     }
 
 
