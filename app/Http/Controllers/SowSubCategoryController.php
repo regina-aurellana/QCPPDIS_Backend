@@ -13,10 +13,10 @@ class SowSubCategoryController extends Controller
 
     public function index()
     {
-        // $subcat = SowCategory::with('sowSubCategory')
-        // ->get();
+        $subcat = SowSubCategory::with(['sowCategory:id,item_code,name', 'parentSubCategory:item_code,name'])
+        ->get();
 
-        // return response()->json($subcat);
+        return response()->json($subcat);
 
 
         // $main_sub_category = SowSubCategory::where('id', 2)->first();
@@ -25,11 +25,11 @@ class SowSubCategoryController extends Controller
 
         // return $data;
 
-        $main_sub_category = SowSubCategory::where('id', 11)->first();
-        $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
+        // $main_sub_category = SowSubCategory::where('id', 2)->first();
+        // $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
 
 
-        return $data;
+        // return $data;
 
     }
 
@@ -117,19 +117,11 @@ class SowSubCategoryController extends Controller
     {
         // DISPLAY SOW CATEGORY AND PARENT SUBCATEGORY
         $subcat = SowSubCategory::where('id', $subcat->id)
-        ->with('parentSubCategory')
-        ->with('sowCategory')
+        ->with(['sowCategory:id,item_code,name', 'parentSubCategory:item_code,name'])
         ->first();
 
         return response()->json($subcat);
 
-        // // DISPLAY ALL CHILDREN SUBCATEGORY OF A SOWCAT ID
-
-        // $main_category = SowCategory::where('id', $subcat->id)->first();
-        // $main_data = $main_category->sowSubCategory()->first();
-        // $main_data->getAllChildrenSubCategory($main_data);
-
-        // return $main_data;
     }
 
 
@@ -161,5 +153,23 @@ class SowSubCategoryController extends Controller
                 'message' => $th->getMessage()
             ]);
         }
+    }
+
+    public function sowcatDescendants(SowSubCategory $subcat){
+
+    // DISPLAY ALL CHILDREN SUBCATEGORY OF A SOWCAT ID
+
+        $main_category = SowCategory::where('id', $subcat->id)->first();
+
+        $main_data = $main_category->sowSubCategory()->first();
+
+            if($main_data == null){
+                return "No descendants to show";
+            }else{
+
+                $main_data->getAllChildrenSubCategory($main_data);
+
+                return $main_data;
+            }
     }
 }

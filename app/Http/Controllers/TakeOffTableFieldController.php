@@ -54,7 +54,9 @@ class TakeOffTableFieldController extends Controller
 
     public function show(string $id)
     {
-        //
+        $table_field = TakeOffTableFields::with('measurement', 'takeOffTable')->get();
+
+        return $table_field;
     }
 
 

@@ -41,6 +41,7 @@ Route::resource('dupaequipment', DupaEquipmentController::class);
 
 Route::resource('dupamaterial', DupaMaterialController::class);
 
+Route::get('subcat-list/{subcat}', [SowSubCategoryController::class, 'sowcatDescendants']);
 Route::resource('subcat', SowSubCategoryController::class);
 
 Route::resource('sowcat', SowCategoryController::class);

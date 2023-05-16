@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\SowSubCategory;
+use App\Models\TakeOffTable;
 
 class SowCategory extends Model
 {
@@ -20,6 +21,10 @@ class SowCategory extends Model
 
     public function sowSubCategory(){
         return $this->hasMany(SowSubCategory::class, 'sow_category_id', 'id');
+    }
+
+    public function takeOffTable(){
+        return $this->hasMany(TakeOffTable::class, 'id');
     }
 
 

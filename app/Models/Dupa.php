@@ -10,6 +10,7 @@ use App\Models\DupaContent;
 use App\Models\UnitOfMeasurement;
 use App\Models\DupaCategory;
 use App\Models\ProjectNature;
+use App\Models\TakeOffTable;
 
 class Dupa extends Model
 {
@@ -32,5 +33,11 @@ class Dupa extends Model
     public function measures(){
         return $this->hasOne(UnitOfMeasurement::class, 'id');
     }
+
+    public function takeOffTable(){
+        return $this->hasMany(TakeOffTable::class, 'id');
+    }
+
+
 
 }
