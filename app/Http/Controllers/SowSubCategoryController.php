@@ -13,10 +13,9 @@ class SowSubCategoryController extends Controller
 
     public function index()
     {
-        // $subcat = SowCategory::with('sowSubCategory')
-        // ->get();
+        $subcat = SowSubCategory::get();
 
-        // return response()->json($subcat);
+        return response()->json($subcat);
 
 
         // $main_sub_category = SowSubCategory::where('id', 2)->first();
@@ -25,11 +24,11 @@ class SowSubCategoryController extends Controller
 
         // return $data;
 
-        $main_sub_category = SowSubCategory::where('id', 11)->first();
-        $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
+        // $main_sub_category = SowSubCategory::where('id', 5)->first();
+        // $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
 
 
-        return $data;
+        // return $data;
 
     }
 
