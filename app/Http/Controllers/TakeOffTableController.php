@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\TakeOff\TakeOffTableRequest;
 use App\Http\Requests\TakeOff\TakeOffTableFieldsRequest;
+use App\Http\Requests\TakeOff\UpdateTakeOffTableRequest;
+use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldsRequest;
 use App\Models\TakeOffTable;
 use App\Models\TakeOffTableFields;
 
@@ -15,7 +17,10 @@ class TakeOffTableController extends Controller
     public function index()
     {
 
-        $table_field = TakeOffTable::with('takeOffTableField.measurement')->get();
+        $table_field = TakeOffTable::with(['dupa:id,description',
+        'sowCategory:id,item_code,name',
+        'takeOffTableField.measurement:id,name'
+        ])->get();
 
         return $table_field;
 
@@ -37,15 +42,15 @@ class TakeOffTableController extends Controller
     }
 
 
-    public function store(TakeOffTableRequest $tabelRequest, TakeOffTableFieldsRequest $fieldRequest)
+    public function store(TakeOffTableRequest $tableRequest, TakeOffTableFieldsRequest $fieldRequest)
     {
 
         try {
 
             $take_off_table = [
-                'take_off_id' => $tabelRequest['take_off_id'],
-                'sow_category_id' => $tabelRequest['sow_category_id'],
-                'dupa_id' => $tabelRequest['dupa_id'],
+                'take_off_id' => $tableRequest['take_off_id'],
+                'sow_category_id' => $tableRequest['sow_category_id'],
+                'dupa_id' => $tableRequest['dupa_id'],
                 'created_at' => now()
             ];
 
@@ -97,9 +102,28 @@ class TakeOffTableController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TakeOffTableRequest $tableRequest, TakeOffTable $take_off_table)
     {
-        //
+        try {
+
+           $take_off_table_field->update([
+                'take_off_id' => $tableRequest['take_off_id'],
+                'sow_category_id' => $tableRequest['sow_category_id'],
+                'dupa_id' => $tableRequest['dupa_id'],
+           ]);
+
+
+            return response()->json([
+                'status' => 'Success',
+                'Message' => 'Take-Off Table Updated'
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
