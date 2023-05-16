@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\TakeOff\TakeOffTableRequest;
+use App\Http\Requests\TakeOff\TakeOffTableFieldsRequest;
 use App\Models\TakeOffTable;
+use App\Models\TakeOffTableFields;
 
 class TakeOffTableController extends Controller
 {
@@ -35,28 +37,37 @@ class TakeOffTableController extends Controller
     }
 
 
-    public function store(TakeOffTableRequest $request)
+    public function store(TakeOffTableRequest $tabelRequest, TakeOffTableFieldsRequest $fieldRequest)
     {
-        try {
-            $take_off_table = TakeOffTable::updateOrCreate(
-                ['take_off_id' => $request['take_off_id']],
-                [
-                    'sow_category_id' => $request['take_off_id'],
-                    'dupa_id' => $request['dupa_id'],
-                ]
-            );
 
-            if($take_off_table->wasRecentlyCreated){
-                return response()->json([
-                    'status' => 'Success',
-                    'message' => 'Take-Off Table Created'
-                ]);
-            } else{
-                return response()->json([
-                    'status' => 'Success',
-                    'message' => 'Take-Off Table Updated'
-                ]);
+        try {
+
+            $take_off_table = [
+                'take_off_id' => $tabelRequest['take_off_id'],
+                'sow_category_id' => $tabelRequest['sow_category_id'],
+                'dupa_id' => $tabelRequest['dupa_id'],
+                'created_at' => now()
+            ];
+
+            $take_off_table_id = TakeOffTable::insertGetId($take_off_table);
+
+            $measure = [];
+            foreach ($fieldRequest->unit_of_measurements as $measurement) {
+                $measure[] = [
+                    'take_off_table_id' => $take_off_table_id,
+                    'measurement_id' => $measurement,
+                    'created_at' => now()
+                ];
+
             }
+            TakeOffTableFields::insert($measure);
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'Take-Off Table Created'
+            ]);
+
+
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',

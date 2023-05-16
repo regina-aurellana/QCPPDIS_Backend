@@ -27,28 +27,28 @@ class TakeOffTableFieldController extends Controller
 
     public function store(TakeOffTableFieldsRequest $request )
     {
-        try {
+        // try {
 
-            foreach ($request->unit_of_measurements as $measurement) {
-                $measure[] = [
-                    'take_off_table_id' => $request['take_off_table_id'],
-                    'measurement_id' => $measurement,
-                    'created_at' => now()
-                ];
-            }
+        //     foreach ($request->unit_of_measurements as $measurement) {
+        //         $measure[] = [
+        //             'take_off_table_id' => $request['take_off_table_id'],
+        //             'measurement_id' => $measurement,
+        //             'created_at' => now()
+        //         ];
+        //     }
 
-            TakeOffTableFields::insert($measure);
+        //     TakeOffTableFields::insert($measure);
 
-            return response()->json([
-                'status' => 'Success',
-                'Message' => 'New Table Field Created'
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'Error',
-                'Message' => $th->getMessage()
-            ]);
-        }
+        //     return response()->json([
+        //         'status' => 'Success',
+        //         'Message' => 'New Table Field Created'
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'status' => 'Error',
+        //         'Message' => $th->getMessage()
+        //     ]);
+        // }
     }
 
 
