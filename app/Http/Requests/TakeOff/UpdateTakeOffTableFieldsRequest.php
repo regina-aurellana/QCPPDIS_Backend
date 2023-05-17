@@ -22,7 +22,7 @@ class UpdateTakeOffTableFieldsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'take_off_table_id' => 'required',
+            'take_off_table_id' => 'nullable',
             'unit_of_measurements.*' => 'required',
         ];
     }

@@ -35,6 +35,10 @@ class TakeOffTable extends Model
         return $this->belongsTo(SowCategory::class);
     }
 
+    public function measurementResult(){
+        return $this->belongsTo(UnitOfMeasurement::class, 'id');
+    }
+
 
 
 
