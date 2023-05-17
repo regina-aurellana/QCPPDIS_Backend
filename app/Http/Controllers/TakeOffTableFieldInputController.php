@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\TakeOff\TakeOffTableFieldsInputsRequest;
+use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldInputRequest;
 use App\Models\TakeOffTableFieldsInput;
 use App\Models\TakeOffTableFields;
+use App\Models\TakeOffTable;
 
 
 class TakeOffTableFieldInputController extends Controller
@@ -40,11 +42,23 @@ class TakeOffTableFieldInputController extends Controller
     public function store(TakeOffTableFieldsInputsRequest $request)
     {
         try {
-            TakeOffTableFieldsInput::updateOrCreate([
-                'row_no' => $request['row_no'],
-                'take_off_table_field_id' => $request['take_off_table_field_id'],
-                'value' => $request['value'],
-            ]);
+
+            $data = $request;
+
+            $sets = [];
+
+            // Loop through each set of data
+            for ($i = 0; $i < count($request['row_no']); $i++) {
+                $set = [
+                    'row_no' => $data['row_no'][$i],
+                    'take_off_table_field_id' => $data['take_off_table_field_id'][$i],
+                    'value' => $data['value'][$i],
+                ];
+
+                $sets[] = $set; // Add the set to the array
+            }
+
+            TakeOffTableFieldsInput::insert($sets);
 
             return response()->json([
                 'status' => "Success",
@@ -85,9 +99,20 @@ class TakeOffTableFieldInputController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTakeOffTableFieldInputRequest $request, TakeOffTable $take_off_table)
     {
-        //
+        try {
+
+
+
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**

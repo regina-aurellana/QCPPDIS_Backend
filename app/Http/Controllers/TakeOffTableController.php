@@ -90,6 +90,8 @@ class TakeOffTableController extends Controller
     {
         $table_field = TakeOffTable::where('id', $take_off_table->id)
         ->with([
+            'dupa:id,description',
+            'sowCategory:id,item_code,name',
             'takeOffTableField.measurement',
             'measurementResult:id,name,abbreviation'
             ])
