@@ -18,30 +18,7 @@ class SowSubCategoryController extends Controller
 
         return response()->json($subcat);
 
-
-        // $main_sub_category = SowSubCategory::where('id', 2)->first();
-        // $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
-
-
-        // return $data;
-
-        // $main_sub_category = SowSubCategory::where('id', 2)->first();
-        // $data = $main_sub_category->getAllChildrenSubCategory($main_sub_category);
-
-
-        // return $data;
-
     }
-
-    // public function test($subcat){
-    //     $categories = $subcat->children;
-
-    //     foreach ($categories as $category) {
-    //         $category->children = $this->test($category);
-    //     }
-
-    //     return $categories;
-    // }
 
 
     public function create()
