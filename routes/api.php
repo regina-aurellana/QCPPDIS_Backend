@@ -54,6 +54,7 @@ Route::resource('category-dupa', CategoryDupaController::class);
 
 Route::resource('take-off', TakeOffController::class);
 
+Route::get('take-off-table-list/{take_off_table}', [TakeOffTableController::class, 'getAllTakeOffTable']);
 Route::resource('take-off-table', TakeOffTableController::class);
 
 Route::resource('take-off-table-field', TakeOffTableFieldController::class);

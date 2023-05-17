@@ -8,6 +8,7 @@ use App\Http\Requests\TakeOff\TakeOffTableRequest;
 use App\Http\Requests\TakeOff\TakeOffTableFieldsRequest;
 use App\Http\Requests\TakeOff\UpdateTakeOffTableRequest;
 use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldsRequest;
+use App\Models\TakeOff;
 use App\Models\TakeOffTable;
 use App\Models\TakeOffTableFields;
 
@@ -143,4 +144,22 @@ class TakeOffTableController extends Controller
     {
         //
     }
+
+
+    public function getAllTakeOffTable(TakeOff $take_off_table)
+    {
+        $table_field = TakeOffTable::where('take_off_id', $take_off_table->id)
+        ->with([
+            'dupa:id,description',
+            'sowCategory:id,item_code,name',
+            'takeOffTableField.measurement',
+            'measurementResult:id,name,abbreviation'
+            ])
+        ->get();
+
+        return $table_field;
+    }
+
+
+
 }
