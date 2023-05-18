@@ -18,11 +18,13 @@ class TakeOffTableSeeder extends Seeder
                 'take_off_id' => '1',
                 'sow_category_id' => '1',
                 'dupa_id' => '2',
+                'table_row_result_field_id' => '2',
             ],
             [
                 'take_off_id' => '1',
                 'sow_category_id' => '2',
                 'dupa_id' => '1',
+                'table_row_result_field_id' => '7',
             ],
         ];
 

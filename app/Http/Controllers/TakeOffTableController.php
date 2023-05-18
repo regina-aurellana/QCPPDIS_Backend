@@ -8,6 +8,7 @@ use App\Http\Requests\TakeOff\TakeOffTableRequest;
 use App\Http\Requests\TakeOff\TakeOffTableFieldsRequest;
 use App\Http\Requests\TakeOff\UpdateTakeOffTableRequest;
 use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldsRequest;
+use App\Models\TakeOff;
 use App\Models\TakeOffTable;
 use App\Models\TakeOffTableFields;
 
@@ -19,7 +20,8 @@ class TakeOffTableController extends Controller
 
         $table_field = TakeOffTable::with(['dupa:id,description',
         'sowCategory:id,item_code,name',
-        'takeOffTableField.measurement:id,name'
+        'takeOffTableField.measurement:id,name,abbreviation',
+        'measurementResult:id,name,abbreviation'
         ])->get();
 
         return $table_field;
@@ -51,6 +53,7 @@ class TakeOffTableController extends Controller
                 'take_off_id' => $tableRequest['take_off_id'],
                 'sow_category_id' => $tableRequest['sow_category_id'],
                 'dupa_id' => $tableRequest['dupa_id'],
+                'table_row_result_field_id' => $tableRequest['table_row_result_field_id'],
                 'created_at' => now()
             ];
 
@@ -86,7 +89,14 @@ class TakeOffTableController extends Controller
      */
     public function show(TakeOffTable $take_off_table)
     {
-        $table_field = TakeOffTable::where('id', $take_off_table->id)->with('takeOffTableField.measurement')->first();
+        $table_field = TakeOffTable::where('id', $take_off_table->id)
+        ->with([
+            'dupa:id,description',
+            'sowCategory:id,item_code,name',
+            'takeOffTableField.measurement',
+            'measurementResult:id,name,abbreviation'
+            ])
+        ->first();
 
         return $table_field;
     }
@@ -106,10 +116,11 @@ class TakeOffTableController extends Controller
     {
         try {
 
-           $take_off_table_field->update([
+           $take_off_table->update([
                 'take_off_id' => $tableRequest['take_off_id'],
                 'sow_category_id' => $tableRequest['sow_category_id'],
                 'dupa_id' => $tableRequest['dupa_id'],
+                'table_row_result_field_id' => $tableRequest['table_row_result_field_id'],
            ]);
 
 
@@ -133,4 +144,22 @@ class TakeOffTableController extends Controller
     {
         //
     }
+
+
+    public function getAllTakeOffTable(TakeOff $take_off_table)
+    {
+        $table_field = TakeOffTable::where('take_off_id', $take_off_table->id)
+        ->with([
+            'dupa:id,description',
+            'sowCategory:id,item_code,name',
+            'takeOffTableField.measurement',
+            'measurementResult:id,name,abbreviation'
+            ])
+        ->get();
+
+        return $table_field;
+    }
+
+
+
 }

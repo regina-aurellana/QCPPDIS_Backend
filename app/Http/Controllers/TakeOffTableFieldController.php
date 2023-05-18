@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TakeOff\TakeOffTableFieldsRequest;
 use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldsRequest;
+use App\Models\TakeOffTableFieldsInput;
 use App\Models\TakeOffTableFields;
 use App\Models\TakeOffTable;
 
@@ -81,14 +82,20 @@ class TakeOffTableFieldController extends Controller
                 'measurement_id' => $measurement,
                 'created_at' => now()
             ];
+
             }
+            $relatedFieldIds = TakeOffTableFields::where('take_off_table_id', $request->take_off_table_id)->pluck('id');
+
+                // Delete related records from take_off_table_fields_inputs
+                TakeOffTableFieldsInput::whereIn('take_off_table_field_id', $relatedFieldIds)->delete();
+
                 TakeOffTableFields::where('take_off_table_id', $request->take_off_table_id)->delete();
                 TakeOffTableFields::insert($measure);
 
 
             return response()->json([
                 'status' => 'Success',
-                'Message' => 'New Table Field Update'
+                'Message' => 'Table Fields Updated'
             ]);
 
         } catch (\Throwable $th) {
