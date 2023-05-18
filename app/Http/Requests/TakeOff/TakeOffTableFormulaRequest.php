@@ -4,7 +4,7 @@ namespace App\Http\Requests\TakeOff;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TakeOffTableFieldsInputsRequest extends FormRequest
+class TakeOffTableFormulaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class TakeOffTableFieldsInputsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'row_no.*' => 'required',
-            'take_off_table_field_id.*' => 'required',
-            'value.*' => 'required',
+            'take_off_table_id' => 'required',
+            'formula' => 'required',
         ];
     }
 }

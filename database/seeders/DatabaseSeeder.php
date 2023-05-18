@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
             B3ProjectSeeder::class,
             SubCatReferenceSeeder::class,
             TakeOffSeeder::class,
-            TakeOffTableSeeder::class,
-            TakeOffTableFieldSeeder::class,
-            TakeOffTableFieldInputSeeder::class,
+            // TakeOffTableSeeder::class,
+            // TakeOffTableFieldSeeder::class,
+            // TakeOffTableFieldInputSeeder::class,
         ]);
     }
 }
