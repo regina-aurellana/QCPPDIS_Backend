@@ -60,9 +60,11 @@ Route::resource('take-off-table', TakeOffTableController::class);
 
 Route::resource('take-off-table-field', TakeOffTableFieldController::class);
 
+Route::get('take-off-table-field-input-compute/{take_off_table_field_input}', [TakeOffTableFieldInputController::class, 'calculateFormula']);
 Route::get('take-off-table-field-input-list/{take_off_table_field_input}', [TakeOffTableFieldInputController::class, 'inputsByTakeOffIdAndTable']);
 Route::resource('take-off-table-field-input', TakeOffTableFieldInputController::class);
 
+Route::get('take-off-table-formula-compute', [TakeOffTableFormulaController::class, 'computeTable']);
 Route::resource('take-off-table-formula', TakeOffTableFormulaController::class);
 
 Route::post('upload-material', [MaterialController::class, 'uploadMaterial']);

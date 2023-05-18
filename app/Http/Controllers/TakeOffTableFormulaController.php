@@ -11,9 +11,18 @@ class TakeOffTableFormulaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function computeTable()
+    {
+        $formula = TakeOffTableFormula::get();
+        return $formula;
+    }
+
+
     public function index()
     {
-        return "yey";
+        $formula = TakeOffTableFormula::get();
+        return $formula;
     }
 
     /**
