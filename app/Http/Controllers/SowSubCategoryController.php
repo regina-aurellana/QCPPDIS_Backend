@@ -33,8 +33,9 @@ class SowSubCategoryController extends Controller
             $parent_sub_cat_id = $request->input('parent_sub_cat_id');
 
             $subcat = SowSubCategory::updateOrCreate(
-                ['item_code' => $request['item_code']],
+                ['id' => $request['id']],
                 [
+                    'item_code' => $request['item_code'],
                     'name' => $request['name'],
                     'sow_category_id' => $request['sow_category_id'],
                 ]
@@ -76,11 +77,6 @@ class SowSubCategoryController extends Controller
                  ]);
              }
 
-        return response()->json([
-            'status' => "Created",
-            'message' => "SubCat Successfully Created"
-        ]);
-
          } catch (\Throwable $th) {
              return response()->json([
                  'status' => "Error",
@@ -117,7 +113,7 @@ class SowSubCategoryController extends Controller
     {
         try {
 
-            $subcat->references()->delete();
+            $subcat->reference()->delete();
             $subcat->delete();
 
             return response()->json([
