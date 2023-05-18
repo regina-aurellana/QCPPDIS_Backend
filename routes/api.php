@@ -22,6 +22,7 @@ use App\Http\Controllers\TakeOffController;
 use App\Http\Controllers\TakeOffTableController;
 use App\Http\Controllers\TakeOffTableFieldController;
 use App\Http\Controllers\TakeOffTableFieldInputController;
+use App\Http\Controllers\TakeOffTableFormulaController;
 
 
 Route::resource('dupa', DupaController::class);
@@ -59,7 +60,10 @@ Route::resource('take-off-table', TakeOffTableController::class);
 
 Route::resource('take-off-table-field', TakeOffTableFieldController::class);
 
+Route::get('take-off-table-field-input-list/{take_off_table_field_input}', [TakeOffTableFieldInputController::class, 'inputsByTakeOffIdAndTable']);
 Route::resource('take-off-table-field-input', TakeOffTableFieldInputController::class);
+
+Route::resource('take-off-table-formula', TakeOffTableFormulaController::class);
 
 Route::post('upload-material', [MaterialController::class, 'uploadMaterial']);
 Route::delete('revert-material', [MaterialController::class, 'revertMaterial']);

@@ -84,9 +84,7 @@ class TakeOffTableController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(TakeOffTable $take_off_table)
     {
         $table_field = TakeOffTable::where('id', $take_off_table->id)
@@ -101,17 +99,13 @@ class TakeOffTableController extends Controller
         return $table_field;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(TakeOffTableRequest $tableRequest, TakeOffTable $take_off_table)
     {
         try {
@@ -159,6 +153,27 @@ class TakeOffTableController extends Controller
 
         return $table_field;
     }
+
+    // public function getAllTakeOffTableSow(TakeOff $take_off_table)
+    // {
+    //     $table_field = TakeOffTable::where('take_off_id', $take_off_table->id)->pluck('id');
+
+    //     foreach ($table_field as $table_fields) {
+    //         $table_field_sow = TakeOffTable::where('sow_category_id', $table_fields)
+    //         ->with([
+    //             'dupa:id,description',
+    //             'sowCategory:id,item_code,name',
+    //             'takeOffTableField.measurement',
+    //             'measurementResult:id,name,abbreviation'
+    //             ])
+    //         ->get();
+
+    //         return $table_field_sow;
+
+    //     }
+
+
+    // }
 
 
 

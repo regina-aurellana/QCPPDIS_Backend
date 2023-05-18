@@ -9,13 +9,12 @@ use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldInputRequest;
 use App\Models\TakeOffTableFieldsInput;
 use App\Models\TakeOffTableFields;
 use App\Models\TakeOffTable;
+use App\Models\TakeOff;
 
 
 class TakeOffTableFieldInputController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $take_off_table_input = TakeOffTableFieldsInput::with(['takeOffTableField' => function($q){
@@ -28,17 +27,11 @@ class TakeOffTableFieldInputController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(TakeOffTableFieldsInputsRequest $request)
     {
         try {
@@ -48,14 +41,12 @@ class TakeOffTableFieldInputController extends Controller
             $sets = [];
 
             // Loop through each set of data
-            for ($i = 0; $i < count($request['row_no']); $i++) {
-                $set = [
-                    'row_no' => $data['row_no'][$i],
-                    'take_off_table_field_id' => $data['take_off_table_field_id'][$i],
-                    'value' => $data['value'][$i],
+            foreach ($request['row_no'] as $key => $value) {
+                $sets[] = [
+                    'row_no' => $request['row_no'][$key],
+                    'take_off_table_field_id' => $request['take_off_table_field_id'][$key],
+                    'value' => $request['value'][$key],
                 ];
-
-                $sets[] = $set; // Add the set to the array
             }
 
             TakeOffTableFieldsInput::insert($sets);
@@ -67,45 +58,98 @@ class TakeOffTableFieldInputController extends Controller
 
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => "Success",
+                'status' => "Error",
                 'message' => $th->getMessage()
             ]);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TakeOffTableFieldsInput $take_off_table_field_input)
+    public function show(TakeOffTable $take_off_table_field_input)
     {
-        $take_off_table_input = TakeOffTableFieldsInput::where('id', $take_off_table_field_input->id)
-        ->with(['takeOffTableField' => function($q){
-            $q->join('unit_of_measurements', 'unit_of_measurements.id', '=', 'take_off_table_fields.measurement_id')
-            ->select('take_off_table_fields.*', 'unit_of_measurements.name as measurement_name');
-         }
-           ])->first();
+        // $take_off_table_input = TakeOffTableFieldsInput::where('id', $take_off_table_field_input->id)
+        // ->with(['takeOffTableField' => function($q){
+        //     $q->join('unit_of_measurements', 'unit_of_measurements.id', '=', 'take_off_table_fields.measurement_id')
+        //     ->select('take_off_table_fields.*', 'unit_of_measurements.name as measurement_name');
+        //  }
+        //    ])->first();
 
-           return response()->json($take_off_table_input);
+        //    return response()->json($take_off_table_input);
+
+        $fields = $take_off_table_field_input->takeOffTableField;
+
+        $rows = [];
+
+        foreach ($fields as $field) {
+
+            $measurement_name = $field->measurement->name;
+            $meas_name = $measurement_name->measurement->name ?? 'Unknown Measurement';
+
+            foreach ($field->takeOffTableFieldInput as $input) {
+                $rowNo = $input->row_no;
+
+                if (!isset($rows[$rowNo])) {
+                    $rows[$rowNo] = [];
+                }
+
+                $rows[$rowNo][] = [
+                    'column_id' => $field->id,
+                    'column_name' => $measurement_name,
+                    'column_value' => $input->value
+                ];
+            }}
+         return $rows;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTakeOffTableFieldInputRequest $request, TakeOffTable $take_off_table)
+    public function update(UpdateTakeOffTableFieldInputRequest $request, TakeOffTable $take_off_table_field_input)
     {
         try {
+            $fields = $take_off_table_field_input->takeOffTableField;
+
+            $rows = [];
+
+            foreach ($fields as $field) {
+
+                foreach ($field->takeOffTableFieldInput as $input) {
+
+                    $rows[] = [
+                        'row_no' => $input->row_no,
+                        'take_off_table_field_id' => $input->take_off_table_field_id,
+                        'value' => $input->value
+                    ];
+                }}
+
+                $existingValue = collect($rows)->pluck('value')->toArray();
+                $newValue = array_diff($request->value, $existingValue);
+
+                $input_value = [];
+
+                foreach ($newValue as $key => $value) {
+                    $input_value[] = [
+                        'row_no' => $request['row_no'][$key],
+                        'take_off_table_field_id' => $request['take_off_table_field_id'][$key],
+                        'value' => $value,
+                        'created_at' => now()
+                    ];
+
+                    }
+
+                    $takeOffTableFieldInputs = TakeOffTableFieldsInput::where('take_off_table_id', $take_off_table_field_input->id)
+                    ->join('take_off_table_fields', 'take_off_table_fields.id', 'take_off_table_fields_inputs.take_off_table_field_id')
+                    ->where('take_off_table_fields_inputs.row_no', $request->row_no)
+                    ->delete();
+
+                    TakeOffTableFieldsInput::insert($input_value);
 
 
-
-
+                    return response()->json([
+                        'status' => "Success",
+                        'message' => "Inputs Updated"
+                    ]);
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -115,11 +159,33 @@ class TakeOffTableFieldInputController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
+    }
+
+    public function inputsByTakeOffIdAndTable(TakeOff $take_off_table_field_input)
+    {
+
+        $tables = $take_off_table_field_input->takeOffTable;
+
+        foreach ($tables as  $table) {
+            $table_fields = $table->takeOffTableField;
+
+            foreach ($table->takeOffTableField as $table_field) {
+                $table_ids = $table_field->take_off_table_id;
+                $measurement_name = $table_field->measurement->name;
+
+                    foreach ($table_field->takeOffTableFieldInput as $value) {
+
+                        $table_no[$table_ids][$value->row_no] []= [
+
+                                'input_value' => $value->value,
+                                'input_field_name' => $measurement_name
+                        ];
+                }
+            }
+        }
+         return $table_no;
     }
 }

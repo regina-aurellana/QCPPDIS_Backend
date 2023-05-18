@@ -21,10 +21,10 @@ class TakeOffTableFields extends Model
     }
 
     public function measurement(){
-        return $this->belongsTo(UnitOfMeasurement::class, 'id');
+        return $this->belongsTo(UnitOfMeasurement::class, 'measurement_id');
     }
 
     public function takeOffTableFieldInput(){
-        return $this->belongsTo(TakeOffTableFieldsInput::class);
+        return $this->hasMany(TakeOffTableFieldsInput::class, 'take_off_table_field_id');
     }
 }
