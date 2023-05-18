@@ -15,6 +15,6 @@ class TakeOffTableFormula extends Model
     protected $guarded = [];
 
     public function takeOffTable(){
-        return $this->belongsTo(TakeOffTable::class);
+        return $this->belongsTo(TakeOffTable::class, 'id');
     }
 }

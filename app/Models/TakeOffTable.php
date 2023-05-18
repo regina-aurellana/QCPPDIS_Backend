@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\B3Projects;
 use App\Models\TakeOff;
 use App\Models\TakeOffTableFields;
+use App\Models\TakeOffTableFormula;
 use App\Models\Dupa;
 use App\Models\SowCategory;
 use App\Models\UnitOfMeasurement;
@@ -37,6 +38,10 @@ class TakeOffTable extends Model
 
     public function measurementResult(){
         return $this->belongsTo(UnitOfMeasurement::class, 'id');
+    }
+
+    public function takeOffTableFormula(){
+        return $this->hasMany(TakeOffTableFormula::class, 'take_off_table_id');
     }
 
 
