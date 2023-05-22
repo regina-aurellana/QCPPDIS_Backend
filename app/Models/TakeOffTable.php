@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\B3Projects;
 use App\Models\TakeOff;
@@ -16,7 +16,7 @@ use App\Models\UnitOfMeasurement;
 
 class TakeOffTable extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $guarded = [];
 
@@ -41,7 +41,7 @@ class TakeOffTable extends Model
     }
 
     public function takeOffTableFormula(){
-        return $this->hasMany(TakeOffTableFormula::class, 'take_off_table_id');
+        return $this->hasMany(TakeOffTableFormula::class);
     }
 
 

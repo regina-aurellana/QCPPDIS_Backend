@@ -15,6 +15,6 @@ class TakeOffTableFieldsInput extends Model
     protected $guarded = [];
 
     public function takeOffTableField(){
-        return $this->belongsTo(TakeOffTableFields::class);
+        return $this->belongsTo(TakeOffTableFields::class, 'id');
     }
 }

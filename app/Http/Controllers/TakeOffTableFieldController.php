@@ -106,8 +106,26 @@ class TakeOffTableFieldController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function destroy(TakeOffTable $take_off_table_field)
     {
-        //
+        try {
+
+            $fields = $take_off_table_field->takeOffTableField;
+
+        foreach ($fields as $field) {
+            $field->takeOffTableFieldInput()->delete();
+            $field->delete();
+        }
+
+            return response()->json([
+                'status' => "Deleted",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

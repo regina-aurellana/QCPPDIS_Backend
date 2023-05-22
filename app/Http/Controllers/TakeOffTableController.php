@@ -134,9 +134,30 @@ class TakeOffTableController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TakeOffTable $take_off_table)
     {
-        //
+        try {
+
+            $fields = $take_off_table->takeOffTableField;
+
+        foreach ($fields as $field) {
+            $field->takeOffTableFieldInput()->delete();
+            $field->delete();
+        }
+
+        $take_off_table->takeOffTableFormula()->delete();
+        $take_off_table->delete();
+
+            return response()->json([
+                'status' => "Deleted",
+                'message' => "Deleted Successfully"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => "Error",
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
 
