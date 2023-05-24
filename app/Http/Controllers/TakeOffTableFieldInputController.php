@@ -68,7 +68,7 @@ class TakeOffTableFieldInputController extends Controller
         }
     }
 
-    public function show(TakeOff $take_off_table_field_input)
+    public function show(TakeOffTable $take_off_table_field_input)
     {
         // $take_off_table_input = TakeOffTableFieldsInput::where('id', $take_off_table_field_input->id)
         // ->with(['takeOffTableField' => function($q){
@@ -183,17 +183,18 @@ class TakeOffTableFieldInputController extends Controller
                     foreach ($table_field->takeOffTableFieldInput as $value) {
 
                         $table_no[$table_ids][$value->row_no]= [
+
                                 'input_value' => $value->value,
                                 'input_field_name' => $measurement_name
                         ];
                 }
             }
-            // $test[] = [
-            //     'table: ' . $table_ids => $table_no
-            // ];
+            $test[] = [
+                'table' . $table_ids => $table_no
+            ];
         }
 
-         return $table_no;
+         return $test;
     }
 
 
