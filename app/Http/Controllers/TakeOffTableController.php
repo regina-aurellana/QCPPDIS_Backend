@@ -169,8 +169,8 @@ class TakeOffTableController extends Controller
             'sowCategory:id,item_code,name',
             'measurementResult:id,name,abbreviation',
             'takeOffTableField' => function($q){
-                $q->join('unit_of_measurements', 'unit_of_measurements.id', 'take_off_table_fields.measurement_id')
-                ->join('take_off_table_fields_inputs', 'take_off_table_fields.id', 'take_off_table_fields_inputs.take_off_table_field_id')
+                $q->leftJoin('unit_of_measurements', 'unit_of_measurements.id', 'take_off_table_fields.measurement_id')
+                ->leftJoin('take_off_table_fields_inputs', 'take_off_table_fields.id', 'take_off_table_fields_inputs.take_off_table_field_id')
                 ->select('take_off_table_fields_inputs.row_no', 'take_off_table_fields.take_off_table_id', 'take_off_table_fields.measurement_id', 'unit_of_measurements.name',  'take_off_table_fields_inputs.value');
             }
 
