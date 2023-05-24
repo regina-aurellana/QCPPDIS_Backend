@@ -68,7 +68,7 @@ class TakeOffTableFieldInputController extends Controller
         }
     }
 
-    public function show(TakeOffTable $take_off_table_field_input)
+    public function show(TakeOff $take_off_table_field_input)
     {
         // $take_off_table_input = TakeOffTableFieldsInput::where('id', $take_off_table_field_input->id)
         // ->with(['takeOffTableField' => function($q){
@@ -96,9 +96,9 @@ class TakeOffTableFieldInputController extends Controller
                 }
 
                 $rows[$rowNo][] = [
-                    'column_id' => $field->id,
-                    'column_name' => $measurement_name,
-                    'column_value' => $input->value
+                    'field_id' => $field->id,
+                    'field_name' => $measurement_name,
+                    'field_value' => $input->value
                 ];
             }}
          return $rows;
@@ -182,48 +182,111 @@ class TakeOffTableFieldInputController extends Controller
 
                     foreach ($table_field->takeOffTableFieldInput as $value) {
 
-                        $table_no[$table_ids][$value->row_no] []= [
-
+                        $table_no[$table_ids][$value->row_no]= [
                                 'input_value' => $value->value,
                                 'input_field_name' => $measurement_name
                         ];
                 }
             }
+            // $test[] = [
+            //     'table: ' . $table_ids => $table_no
+            // ];
         }
+
          return $table_no;
     }
 
 
-    public function calculateFormula(TakeOffTable $take_off_table_field_input)
-        {
-            $fields = $take_off_table_field_input->takeOffTableField;
-            $fieldNames = [];
-            $fieldValues = [];
-            $tableFormulas = [];
+    // public function calculateFormula(TakeOffTable $take_off_table_field_input)
+    //     {
+    //         $fields = $take_off_table_field_input->takeOffTableField;
+    //         $fieldNames = [];
+    //         $fieldValues = [];
+    //         $tableFormulas = [];
 
-            foreach ($fields as $field) {
-                $formula_table = $field->takeOffTable;
-                $formula = $formula_table->takeOffTableFormula;
-                $measurement_name = $field->measurement->name;
+    //         foreach ($fields as $field) {
+    //             $formula_table = $field->takeOffTable;
+    //             $formula = $formula_table->takeOffTableFormula;
+    //             $measurement_name = $field->measurement->name;
 
-                // Store field name
+    //             // Store field name
+    //             $fieldNames[] = $measurement_name;
+
+    //             // Store field values
+    //             foreach ($field->takeOffTableFieldInput as $index => $input) {
+    //                 $column_value = $input->value;
+    //                 if ($measurement_name === 'Considered') {
+    //                     // Convert the percentage value to decimal
+    //                     $column_value = $column_value / 100;
+    //                 }
+    //                 $fieldValues[$index][] = $column_value;
+    //             }
+    //         }
+
+    //         $result = [
+    //             'fieldName' => $fieldNames,
+    //             'fieldValue' => $fieldValues,
+    //             // 'tableFormula' => $formula
+    //         ];
+
+    //         $fieldName = $result['fieldName'];
+    //         $fieldValue = $result['fieldValue'];
+    //         $tableFormula = collect($formula)->pluck('formula')->toArray();
+
+    //         $results = [];
+
+    //         foreach ($fieldValue as $set) {
+    //             $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
+
+    //             foreach ($fieldName as $nameIndex => $name) {
+    //                 $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
+    //             }
+
+    //         // Add multiplication operator where necessary
+    //         $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
+    //         $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
+
+    //             // Evaluate the formula using eval() function
+    //             $result = eval("return $tableFormulaString;");
+
+
+    //             $results[] = $result; // Result of each row
+    //         }
+
+    //         $sum = array_sum($results); // Get the total sum of the table
+
+    //         return $results;
+    //     }
+
+
+    public function calculateFormula(TakeOff $take_off_table_field_input)
+    {
+        $tables = $take_off_table_field_input->takeOffTable;
+        $fieldNames = [];
+        $fieldValues = [];
+        $tableFormulas = [];
+
+        foreach($tables as $table){
+            $fields = $table->takeOffTableField;
+            $formula = $table->takeOffTableFormula;
+
+            foreach($fields as $table_field){
+                $table_fields[] = $table_field;
+                $measurement_name = $table_field->measurement->name;
+
+
                 $fieldNames[] = $measurement_name;
 
-                // Store field values
-                foreach ($field->takeOffTableFieldInput as $index => $input) {
-                    $column_value = $input->value;
-                    if ($measurement_name === 'Considered') {
-                        // Convert the percentage value to decimal
-                        $column_value = $column_value / 100;
-                    }
-                    $fieldValues[$index][] = $column_value;
+                foreach($table_field->takeOffTableFieldInput as $key => $table_field){
+                        $field_value = $table_field->value;
+                        $fieldValues[$key][] = $field_value;
+
                 }
             }
 
             $result = [
                 'fieldName' => $fieldNames,
-                'fieldValue' => $fieldValues,
-                // 'tableFormula' => $formula
+                'fieldValue' => $fieldValues
             ];
 
             $fieldName = $result['fieldName'];
@@ -232,31 +295,106 @@ class TakeOffTableFieldInputController extends Controller
 
             $results = [];
 
-            foreach ($fieldValue as $set) {
-                $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
+        foreach ($fieldValue as $set) {
+            $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
 
-                foreach ($fieldName as $nameIndex => $name) {
-                    $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
-                }
-
-            // Add multiplication operator where necessary
-            $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
-            $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
-
-                // Evaluate the formula using eval() function
-                $result = eval("return $tableFormulaString;");
-
-
-                $results[] = $result; // Result of each row
+            foreach ($fieldName as $nameIndex => $name) {
+                $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
             }
 
-            $sum = array_sum($results); // Get the total sum of the table
+        // Add multiplication operator where necessary
+        $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
+        $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
 
-            return $results;
+            // Evaluate the formula using eval() function
+            $result = eval("return $tableFormulaString;");
+
+            $test = [
+                'set' => $set,
+                'fieldname' =>$fieldName,
+                'fieldvalue' =>$fieldValue,
+            ];
 
 
-
+            $results[] = $result; // Result of each row
         }
+
+        $sum = array_sum($results); // Get the total sum of the table
+
+        // return $results;
+    //    $test[] = $results;
+
+    return $table_fields;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // foreach ($fields as $field) {
+        //     $formula_table = $field->takeOffTable;
+        //     $formula = $formula_table->takeOffTableFormula;
+        //     $measurement_name = $field->measurement->name;
+
+        //     // Store field name
+        //     $fieldNames[] = $measurement_name;
+
+        //     // Store field values
+        //     foreach ($field->takeOffTableFieldInput as $index => $input) {
+        //         $column_value = $input->value;
+        //         if ($measurement_name === 'Considered') {
+        //             // Convert the percentage value to decimal
+        //             $column_value = $column_value / 100;
+        //         }
+        //         $fieldValues[$index][] = $column_value;
+        //     }
+        // }
+
+        // $result = [
+        //     'fieldName' => $fieldNames,
+        //     'fieldValue' => $fieldValues,
+        //     // 'tableFormula' => $formula
+        // ];
+
+        // $fieldName = $result['fieldName'];
+        // $fieldValue = $result['fieldValue'];
+        // $tableFormula = collect($formula)->pluck('formula')->toArray();
+
+        // $results = [];
+
+        // foreach ($fieldValue as $set) {
+        //     $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
+
+        //     foreach ($fieldName as $nameIndex => $name) {
+        //         $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
+        //     }
+
+        // // Add multiplication operator where necessary
+        // $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
+        // $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
+
+        //     // Evaluate the formula using eval() function
+        //     $result = eval("return $tableFormulaString;");
+
+
+        //     $results[] = $result; // Result of each row
+        // }
+
+        // $sum = array_sum($results); // Get the total sum of the table
+
+        // return $results;
+    }
+
 
 
 
