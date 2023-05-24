@@ -285,6 +285,8 @@ class TakeOffTableFieldInputController extends Controller
                 }
             }
 
+            return $fieldNames;
+
             $result = [
                 'fieldName' => $fieldNames,
                 'fieldValue' => $fieldValues
@@ -293,6 +295,8 @@ class TakeOffTableFieldInputController extends Controller
             $fieldName = $result['fieldName'];
             $fieldValue = $result['fieldValue'];
             $tableFormula = collect($formula)->pluck('formula')->toArray();
+
+
 
             $results = [];
 
@@ -327,7 +331,7 @@ class TakeOffTableFieldInputController extends Controller
 
 
         }
-        return $results;
+        // return $results;
 
 
 
