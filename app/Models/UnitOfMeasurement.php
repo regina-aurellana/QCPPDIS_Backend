@@ -22,7 +22,7 @@ class UnitOfMeasurement extends Model
     }
 
     public function takeOffTable(){
-        return $this->hasMany(TakeOffTable::class, 'table_row_result_field_id', 'id');
+        return $this->hasMany(TakeOffTable::class, 'table_row_result_field_id');
     }
 
     public function tableField(){

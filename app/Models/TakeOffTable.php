@@ -37,7 +37,7 @@ class TakeOffTable extends Model
     }
 
     public function measurementResult(){
-        return $this->belongsTo(UnitOfMeasurement::class, 'id');
+        return $this->belongsTo(UnitOfMeasurement::class, 'table_row_result_field_id');
     }
 
     public function takeOffTableFormula(){
