@@ -296,7 +296,7 @@ class TakeOffTableFieldInputController extends Controller
 
             $results = [];
 
-        foreach ($fieldValue as $set) {
+            foreach ($fieldValue as $set) {
             $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
 
             foreach ($fieldName as $nameIndex => $name) {
@@ -325,8 +325,9 @@ class TakeOffTableFieldInputController extends Controller
         // return $results;
     //    $test[] = $results;
 
-    return $table_fields;
+
         }
+        return $results;
 
 
 
