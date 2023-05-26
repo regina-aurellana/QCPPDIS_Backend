@@ -168,6 +168,8 @@ class TakeOffTableController extends Controller
             'dupa:id,description',
             'sowCategory:id,item_code,name',
             'measurementResult:id,name,abbreviation',
+            'mark:id,take_off_table_id,row_no,description',
+            'takeOffTableFormula:id,take_off_table_id,formula',
             'takeOffTableField' => function($q){
                 $q->leftJoin('unit_of_measurements', 'unit_of_measurements.id', 'take_off_table_fields.measurement_id')
                 ->leftJoin('take_off_table_fields_inputs', 'take_off_table_fields.id', 'take_off_table_fields_inputs.take_off_table_field_id')

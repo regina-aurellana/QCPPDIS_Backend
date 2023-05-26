@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\TakeOff\TakeOffTableFieldsInputsRequest;
 use App\Http\Requests\TakeOff\UpdateTakeOffTableFieldInputRequest;
+use App\Http\Requests\Mark\MarkRequest;
+use App\Http\Requests\Mark\UpdateMarkRequest;
 use App\Models\TakeOffTableFieldsInput;
 use App\Models\TakeOffTableFields;
 use App\Models\TakeOffTableFormula;
 use App\Models\TakeOffTable;
 use App\Models\TakeOff;
+use App\Models\Mark;
 
 
 class TakeOffTableFieldInputController extends Controller
@@ -33,26 +36,33 @@ class TakeOffTableFieldInputController extends Controller
 
     }
 
-    public function store(TakeOffTableFieldsInputsRequest $request)
+    public function store(TakeOffTableFieldsInputsRequest $inputRequest, MarkRequest $markRequest)
     {
         try {
 
             $maxRowNo = TakeOffTableFieldsInput::max('row_no');
             $nextRowNo = $maxRowNo + 1;
 
-            $data = $request;
+            $data = $inputRequest;
 
             $sets = [];
 
             // Loop through each set of data
-            foreach ($request['take_off_table_field_id'] as $key => $value) {
+            foreach ($inputRequest['take_off_table_field_id'] as $key => $value) {
                 $sets[] = [
                     'row_no' => $nextRowNo,
-                    'take_off_table_field_id' => $request['take_off_table_field_id'][$key],
-                    'value' => $request['value'][$key],
+                    'take_off_table_field_id' => $inputRequest['take_off_table_field_id'][$key],
+                    'value' => $inputRequest['value'][$key],
                 ];
             }
 
+            $mark = [
+                'take_off_table_id' => $markRequest['take_off_table_id'],
+                'row_no' => $nextRowNo,
+                'description' => $markRequest['description'],
+            ];
+
+            Mark::insert($mark);
             TakeOffTableFieldsInput::insert($sets);
 
             return response()->json([
@@ -86,7 +96,6 @@ class TakeOffTableFieldInputController extends Controller
         foreach ($fields as $field) {
 
             $measurement_name = $field->measurement->name;
-            $meas_name = $measurement_name->measurement->name ?? 'Unknown Measurement';
 
             foreach ($field->takeOffTableFieldInput as $input) {
                 $rowNo = $input->row_no;
@@ -109,7 +118,8 @@ class TakeOffTableFieldInputController extends Controller
         //
     }
 
-    public function update(UpdateTakeOffTableFieldInputRequest $request, TakeOffTable $take_off_table_field_input)
+
+    public function update(UpdateTakeOffTableFieldInputRequest $request, MarkRequest $markRequest, TakeOffTable $take_off_table_field_input)
     {
         try {
             $fields = $take_off_table_field_input->takeOffTableField;
@@ -134,13 +144,26 @@ class TakeOffTableFieldInputController extends Controller
 
                 foreach ($newValue as $key => $value) {
                     $input_value[] = [
-                        'row_no' => $request['row_no'][$key],
+                        'row_no' => $request['row_no'],
                         'take_off_table_field_id' => $request['take_off_table_field_id'][$key],
                         'value' => $value,
                         'created_at' => now()
                     ];
-
                     }
+
+                    $mark_desc = [
+                        'take_off_table_id' => $markRequest['take_off_table_id'],
+                        'row_no' => $request->row_no,
+                        'description' => $markRequest['description'],
+                    ];
+
+                    $mark_query = Mark::where('row_no', $request->row_no)
+                    ->join('take_off_tables', 'take_off_tables.id', 'marks.take_off_table_id')
+                    ->delete();
+
+                    // return $input_value;
+
+                    Mark::insert($mark_desc);
 
                     $takeOffTableFieldInputs = TakeOffTableFieldsInput::where('take_off_table_id', $take_off_table_field_input->id)
                     ->join('take_off_table_fields', 'take_off_table_fields.id', 'take_off_table_fields_inputs.take_off_table_field_id')
@@ -162,6 +185,7 @@ class TakeOffTableFieldInputController extends Controller
             ]);
         }
     }
+
 
     public function destroy(string $id)
     {
@@ -262,14 +286,17 @@ class TakeOffTableFieldInputController extends Controller
 
     public function calculateFormula(TakeOff $take_off_table_field_input)
     {
-        $tables = $take_off_table_field_input->takeOffTable;
+       $tables = $take_off_table_field_input->takeOffTable;
         $fieldNames = [];
         $fieldValues = [];
         $tableFormulas = [];
 
+
+
         foreach($tables as $table){
             $fields = $table->takeOffTableField;
             $formula = $table->takeOffTableFormula;
+            $tableID = $table->id;
 
             foreach($fields as $table_field){
                 $table_fields[] = $table_field;
@@ -285,8 +312,6 @@ class TakeOffTableFieldInputController extends Controller
                 }
             }
 
-            return $fieldNames;
-
             $result = [
                 'fieldName' => $fieldNames,
                 'fieldValue' => $fieldValues
@@ -296,42 +321,44 @@ class TakeOffTableFieldInputController extends Controller
             $fieldValue = $result['fieldValue'];
             $tableFormula = collect($formula)->pluck('formula')->toArray();
 
-
-
             $results = [];
 
-            foreach ($fieldValue as $set) {
-            $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
 
-            foreach ($fieldName as $nameIndex => $name) {
-                $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
+
+            foreach ($fieldValue as $set)
+            {
+                $tableFormulaString = $tableFormula[0];
+
+                foreach ($fieldName as $nameIndex => $name) {
+                    $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
+
+                }
+                // return $tableFormulaString;
+
+                // Add multiplication operator where necessary
+                $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
+                $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
+
+                // Evaluate the formula using eval() function
+                $result = eval("return $tableFormulaString;");
+
+
+                    $results[] = $result;
             }
 
-        // Add multiplication operator where necessary
-        $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
-        $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
+           $resultss[] = $results;
 
-            // Evaluate the formula using eval() function
-            $result = eval("return $tableFormulaString;");
+           $table_row_sum = array_sum($results);
 
-            $test = [
-                'set' => $set,
-                'fieldname' =>$fieldName,
-                'fieldvalue' =>$fieldValue,
-            ];
+           $test["table " . $tableID] = [
+            'row_result' => $results,
+            'table_total' => $table_row_sum
+           ];
 
-
-            $results[] = $result; // Result of each row
-        }
-
-        $sum = array_sum($results); // Get the total sum of the table
-
-        // return $results;
-    //    $test[] = $results;
+           return $test;
 
 
         }
-        // return $results;
 
 
 
@@ -347,58 +374,6 @@ class TakeOffTableFieldInputController extends Controller
 
 
 
-        // foreach ($fields as $field) {
-        //     $formula_table = $field->takeOffTable;
-        //     $formula = $formula_table->takeOffTableFormula;
-        //     $measurement_name = $field->measurement->name;
-
-        //     // Store field name
-        //     $fieldNames[] = $measurement_name;
-
-        //     // Store field values
-        //     foreach ($field->takeOffTableFieldInput as $index => $input) {
-        //         $column_value = $input->value;
-        //         if ($measurement_name === 'Considered') {
-        //             // Convert the percentage value to decimal
-        //             $column_value = $column_value / 100;
-        //         }
-        //         $fieldValues[$index][] = $column_value;
-        //     }
-        // }
-
-        // $result = [
-        //     'fieldName' => $fieldNames,
-        //     'fieldValue' => $fieldValues,
-        //     // 'tableFormula' => $formula
-        // ];
-
-        // $fieldName = $result['fieldName'];
-        // $fieldValue = $result['fieldValue'];
-        // $tableFormula = collect($formula)->pluck('formula')->toArray();
-
-        // $results = [];
-
-        // foreach ($fieldValue as $set) {
-        //     $tableFormulaString = $tableFormula[0]; // Assuming only one formula is provided
-
-        //     foreach ($fieldName as $nameIndex => $name) {
-        //         $tableFormulaString = str_replace($name, $set[$nameIndex], $tableFormulaString);
-        //     }
-
-        // // Add multiplication operator where necessary
-        // $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
-        // $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
-
-        //     // Evaluate the formula using eval() function
-        //     $result = eval("return $tableFormulaString;");
-
-
-        //     $results[] = $result; // Result of each row
-        // }
-
-        // $sum = array_sum($results); // Get the total sum of the table
-
-        // return $results;
     }
 
 
