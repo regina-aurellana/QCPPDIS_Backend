@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\TakeOff;
+namespace App\Http\Requests\Mark;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTakeOffTableFieldInputRequest extends FormRequest
+class UpdateMarkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class UpdateTakeOffTableFieldInputRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'row_no' => 'required',
-            'value.*' => 'required',
+            'description' => 'required',
         ];
     }
 }

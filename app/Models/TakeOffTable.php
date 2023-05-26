@@ -13,6 +13,7 @@ use App\Models\TakeOffTableFormula;
 use App\Models\Dupa;
 use App\Models\SowCategory;
 use App\Models\UnitOfMeasurement;
+use App\Models\Mark;
 
 class TakeOffTable extends Model
 {
@@ -42,6 +43,10 @@ class TakeOffTable extends Model
 
     public function takeOffTableFormula(){
         return $this->hasMany(TakeOffTableFormula::class);
+    }
+
+    public function mark(){
+        return $this->hasMany(Mark::class, 'take_off_table_id');
     }
 
 
