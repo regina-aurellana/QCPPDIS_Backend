@@ -163,7 +163,7 @@ class TakeOffTableController extends Controller
 
     public function getAllTakeOffTable(TakeOff $take_off_table)
     {
-        $table_field = TakeOffTable::where('take_off_id', $take_off_table->id)
+        $table_field= TakeOffTable::where('take_off_id', $take_off_table->id)
         ->with([
             'dupa:id,description',
             'sowCategory:id,item_code,name',
