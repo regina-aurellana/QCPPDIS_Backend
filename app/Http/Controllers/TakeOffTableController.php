@@ -163,7 +163,7 @@ class TakeOffTableController extends Controller
 
     public function getAllTakeOffTable(TakeOff $take_off_table)
     {
-        $table_field= TakeOffTable::where('take_off_id', $take_off_table->id)
+        $tables= TakeOffTable::where('take_off_id', $take_off_table->id)
         ->with([
             'dupa:id,description',
             'sowCategory:id,item_code,name',
@@ -180,8 +180,90 @@ class TakeOffTableController extends Controller
             ])
         ->get();
 
-        return $table_field;
+        foreach ($tables as $table) {
+
+            $fieldNames = [];
+            $fieldValues = [];
+            $formulas = [];
+            $table_compute = [];
+
+            $tableID = $table->id;
+
+
+            foreach ($table->takeOffTableFormula as $formula) {
+                $formulas[] = $formula->formula;
+            }
+
+            foreach ($table->takeOffTableField as $table_field) {
+                $table_fields[] = $table_field;
+                $measurement_name = $table_field->measurement->name;
+
+                $fieldNames[] = $measurement_name;
+
+                foreach($table_field->takeOffTableFieldInput as $key => $table_field){
+                    $fieldValues[$key][] = $table_field->value;
+                }
+            }
+
+            $result = [
+                'fieldName' => $fieldNames,
+                'fieldValue' => $fieldValues
+            ];
+
+            $fieldName = $result['fieldName'];
+            $fieldValue = $result['fieldValue'];
+            $tableFormula = $formulas;
+
+            $results = [];
+
+
+            foreach ($fieldValue as $input)
+            {
+                $tableFormulaString = $tableFormula[0];
+                info($tableFormulaString);
+
+                foreach ($fieldName as $nameIndex => $name) {
+
+                    if (strpos($tableFormulaString, $name) !== false) {
+                        $tableFormulaString = str_replace($name, $input[$nameIndex], $tableFormulaString);
+                    }
+                }
+
+                info($tableFormulaString);
+
+                // Add multiplication operator where necessary
+                $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
+                $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
+
+                // Evaluate the formula using eval() function
+                $result = eval("return $tableFormulaString;");
+
+                    $results[] = $result;
+            }
+
+            $row_result[] = $results;
+
+           $table_row_sum = array_sum($results);
+
+           $table_compute = [
+            'take_off_table_id' => $tableID,
+            'row_result' => $results,
+            'table_total' => $table_row_sum
+           ];
+
+           $final_result[] = [
+                'table' => $table,
+                'result_per_row' => $table_compute
+           ];
+
+
+        }
+
+        return $final_result;
+
     }
+
+
 
     // public function getAllTakeOffTableSow(TakeOff $take_off_table)
     // {
