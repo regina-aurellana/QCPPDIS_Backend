@@ -275,13 +275,22 @@ class TakeOffTableFieldInputController extends Controller
 
                 foreach ($fieldName as $nameIndex => $name) {
 
-                    // info("table-id" . $table->id);
-                    // info($nameIndex);
-                    // info($input[$nameIndex]);
+                    $formattedFieldName = str_replace(' ', '_', $name);
 
-                    if (strpos($tableFormulaString, $name) !== false) {
-                        $tableFormulaString = str_replace($name, $input[$nameIndex], $tableFormulaString);
-                    }
+                    // Prepare the replacement array
+                    $replacements = [
+                        $formattedFieldName => $input[$nameIndex],
+                        str_replace(' ', '_', $formattedFieldName) => $input[$nameIndex]
+                    ];
+
+                    $formattedTableFormulaString = str_replace(' ', '_', $tableFormulaString);
+
+                    // Perform the replacements using strtr
+                    $tableFormulaString = strtr($formattedTableFormulaString, $replacements);
+
+                    info('pls');
+                    info($tableFormulaString);
+                    info($replacements);
                 }
 
 
