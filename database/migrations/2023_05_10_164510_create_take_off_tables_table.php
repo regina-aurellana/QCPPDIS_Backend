@@ -16,15 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('take_off_id');
             $table->unsignedBigInteger('sow_category_id');
             $table->unsignedBigInteger('dupa_id');
-            $table->unsignedBigInteger('table_row_result_field_id');
-            $table->string('table_total_say')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('take_off_id')->references('id')->on('take_offs');
             $table->foreign('sow_category_id')->references('id')->on('sow_categories');
             $table->foreign('dupa_id')->references('id')->on('dupas');
-            $table->foreign('table_row_result_field_id')->references('id')->on('unit_of_measurements');
         });
     }
 

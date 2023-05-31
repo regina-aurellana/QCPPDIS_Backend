@@ -27,16 +27,12 @@ class UnitOfMeasurementSeeder extends Seeder
                 'abbreviation' => 'v',
             ],
             [
-                'name' => 'Square',
-                'abbreviation' => 'sq.',
-            ],
-            [
                 'name' => 'Square Meter',
                 'abbreviation' => 'sq.m.',
             ],
             [
-                'name' => 'Cubic',
-                'abbreviation' => 'cu.',
+                'name' => 'Cubic Meter',
+                'abbreviation' => 'cu.m.',
             ],
             [
                 'name' => 'yard',
@@ -50,6 +46,19 @@ class UnitOfMeasurementSeeder extends Seeder
                 'name' => 'Meter',
                 'abbreviation' => 'm',
             ],
+            [
+                'name' => 'Width',
+                'abbreviation' => 'w',
+            ],
+            [
+                'name' => 'Area',
+                'abbreviation' => 'A',
+            ],
+            [
+                'name' => 'Depth',
+                'abbreviation' => 'd',
+            ],
+
 
         ];
 

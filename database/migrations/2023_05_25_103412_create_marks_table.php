@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('take_off_table_id');
             $table->string('row_no')->nullable();
-            $table->string('description')->nullable();
+            $table->string('mark_description')->nullable();
             $table->timestamps();
 
             $table->foreign('take_off_table_id')->references('id')->on('take_off_tables');

@@ -25,7 +25,6 @@ class TakeOffTableRequest extends FormRequest
             'take_off_id' => 'required',
             'sow_category_id' => 'required',
             'dupa_id' => 'required',
-            'table_row_result_field_id' => 'required',
         ];
     }
 }
