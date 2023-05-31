@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\TakeOff;
+namespace App\Http\Requests\Formula;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TakeOffTableFormulaRequest extends FormRequest
+class FormulaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class TakeOffTableFormulaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'take_off_table_id' => 'required',
+            'unit_of_measurement_id' => 'required',
+            'result' => 'required',
             'formula' => 'required',
         ];
     }

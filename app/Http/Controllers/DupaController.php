@@ -185,7 +185,7 @@ class DupaController extends Controller
         $k_total_unit_cost = round($g_direct_unit_cost_e_f + $h_ocm + $i_contractors_profit + $j_vat, 2);
 
         $dupa = $dupa_content->dupa;
-        $dupa->direct_unit_cost = $k_total_unit_cost;
+        $dupa->direct_unit_cost = $g_direct_unit_cost_e_f;
         $dupa->save();
 
         }

@@ -21,10 +21,12 @@ class TakeOffTableFieldInputController extends Controller
 
     public function index()
     {
-        $take_off_table_input = TakeOffTableFieldsInput::with(['takeOffTableField' => function($q){
-            $q->join('unit_of_measurements', 'unit_of_measurements.id', '=', 'take_off_table_fields.measurement_id')
-            ->select('take_off_table_fields.*', 'unit_of_measurements.name as measurement_name');
-         }])->get();
+        // $take_off_table_input = TakeOffTableFieldsInput::with(['takeOffTableField' => function($q){
+        //     $q->join('unit_of_measurements', 'unit_of_measurements.id', '=', 'take_off_table_fields.measurement_id')
+        //     ->select('take_off_table_fields.*', 'unit_of_measurements.name as measurement_name');
+        //  }])->get();
+
+        $take_off_table_input = TakeOffTableFieldsInput::get();
 
         return response()->json($take_off_table_input);
 
@@ -59,7 +61,7 @@ class TakeOffTableFieldInputController extends Controller
             $mark = [
                 'take_off_table_id' => $markRequest['take_off_table_id'],
                 'row_no' => $nextRowNo,
-                'description' => $markRequest['description'],
+                'mark_description' => $markRequest['mark_description'],
             ];
 
             Mark::insert($mark);
@@ -161,8 +163,6 @@ class TakeOffTableFieldInputController extends Controller
                     ->join('take_off_tables', 'take_off_tables.id', 'marks.take_off_table_id')
                     ->delete();
 
-                    // return $input_value;
-
                     Mark::insert($mark_desc);
 
                     $takeOffTableFieldInputs = TakeOffTableFieldsInput::where('take_off_table_id', $take_off_table_field_input->id)
@@ -234,8 +234,11 @@ class TakeOffTableFieldInputController extends Controller
             $tableFormulas = [];
 
             $fields = $table->takeOffTableField;
-            $formula = $table->takeOffTableFormula;
             $tableID = $table->id;
+
+            $test = $table->dupa;
+            $mes = $test->measures;
+            $formula = $mes->formula;
 
             foreach($fields as $table_field){
                 $table_fields[] = $table_field;
@@ -271,30 +274,11 @@ class TakeOffTableFieldInputController extends Controller
             foreach ($fieldValue as $input)
             {
                 $tableFormulaString = $tableFormula[0];
-                info($tableFormulaString);
+
 
                 foreach ($fieldName as $nameIndex => $name) {
-
-                    $formattedFieldName = str_replace(' ', '_', $name);
-
-                    // Prepare the replacement array
-                    $replacements = [
-                        $formattedFieldName => $input[$nameIndex],
-                        str_replace(' ', '_', $formattedFieldName) => $input[$nameIndex]
-                    ];
-
-                    $formattedTableFormulaString = str_replace(' ', '_', $tableFormulaString);
-
-                    // Perform the replacements using strtr
-                    $tableFormulaString = strtr($formattedTableFormulaString, $replacements);
-
-                    info('pls');
-                    info($tableFormulaString);
-                    info($replacements);
+                    $tableFormulaString = str_replace($name, $input[$nameIndex], $tableFormulaString);
                 }
-
-
-                info($tableFormulaString);
 
                 // Add multiplication operator where necessary
                 $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);

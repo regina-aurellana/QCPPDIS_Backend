@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Dupa;
 use App\Models\TakeOffTableFields;
 use App\Models\TakeOffTable;
+use App\Models\Formula;
 
 class UnitOfMeasurement extends Model
 {
@@ -18,7 +19,7 @@ class UnitOfMeasurement extends Model
     protected $guarded = [];
 
     public function dupa(){
-        return $this->belongsTo(Dupa::class);
+        return $this->hasOne(Dupa::class, 'unit_id','id');
     }
 
     public function takeOffTable(){
@@ -28,5 +29,13 @@ class UnitOfMeasurement extends Model
     public function tableField(){
         return $this->hasMany(TakeOffTableFields::class, 'measurement_id', 'id');
     }
+
+    public function formula(){
+        return $this->hasMany(Formula::class, 'unit_of_measurement_id', 'id');
+    }
+
+    // public function dupaMeasure(){
+    //     return $this->hasMany(Dupa::class, 'unit_id');
+    // }
 
 }

@@ -17,21 +17,22 @@ class DupaSeeder extends Seeder
         $dupa = [
             [
                 'subcategory_id' => '1',
-                'item_number' => '800(3)a1',
-                'description' => 'Individual Removal of Trees (Small, 150mm Ø up to 300mm Ø)',
-                'unit_id' => '1',
-                'category_dupa_id' => 1,
+                'item_number' => '101(3)c1',
+                'description' => 'Removal of Actual Structured Obstruction, 0.05m thick, Asphalt',
+                'unit_id' => '4',
+                'category_dupa_id' => '2',
                 'output_per_hour' => '500.00',
             ],
             [
 
                 'subcategory_id' => '2',
-                'item_number' => '803|(1)a',
-                'description' => 'Structure Excavation (Common Soil)',
-                'unit_id' => '2',
-                'category_dupa_id' => 2,
-                'output_per_hour' => '300.00',
+                'item_number' => '102(2) ',
+                'description' => 'Roadway Excavation',
+                'unit_id' => '5',
+                'category_dupa_id' => '2',
+                'output_per_hour' => '120.00',
             ],
+
         ];
 
         foreach($dupa as $dupas){
