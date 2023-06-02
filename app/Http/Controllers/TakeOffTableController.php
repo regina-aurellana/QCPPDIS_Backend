@@ -163,7 +163,9 @@ class TakeOffTableController extends Controller
                     }
 
                     $rows[$rowNo][] = [
+                        'table_id' => $table->id,
                         'row_no' => $rowNo,
+                        'field_id'=> $table_field->take_off_table_field_id,
                         'field_name' => $measurement_name,
                         'field_value' => $table_field->value
                     ];
@@ -206,8 +208,9 @@ class TakeOffTableController extends Controller
 
             $table_row_sum = array_sum($results);
 
-        // Compute per row
+            // Compute per row
             $table_compute = [
+                'row_inputs' => $rows,
                 'row_result' => $results,
                 'table_total' => $table_row_sum,
                 'take_off_table_id' => $tableID
@@ -215,7 +218,6 @@ class TakeOffTableController extends Controller
 
             $final_result[] = [
                  $table,
-                 $rows,
                  $table_compute,
             ];
 
@@ -280,7 +282,6 @@ class TakeOffTableController extends Controller
 
         $table->table_say = $table_say_total;
         $table->save();
-
 
     }
 
