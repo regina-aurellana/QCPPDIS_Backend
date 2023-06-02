@@ -26,7 +26,7 @@ class TakeOffTableFieldController extends Controller
     }
 
 
-    public function store(TakeOffTableFieldsRequest $request )
+    public function store(TakeOffTableFieldsRequest $request)
     {
         try {
 

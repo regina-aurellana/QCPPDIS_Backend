@@ -58,6 +58,19 @@ class UnitOfMeasurementSeeder extends Seeder
                 'name' => 'Depth',
                 'abbreviation' => 'd',
             ],
+            [
+                'name' => 'Quantity',
+                'abbreviation' => 'qty.',
+            ],
+            [
+                'name' => 'Deduction',
+                'abbreviation' => 'deduct',
+            ],
+            [
+                'name' => 'Addition',
+                'abbreviation' => 'add',
+            ],
+
 
 
         ];
