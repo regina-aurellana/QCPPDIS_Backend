@@ -174,13 +174,13 @@ class TakeOffTableController extends Controller
             }
 
             // Input per row
-            $row_inputs[$rowNo] = [
+            $row_inputs = [
                 'fieldName' => $fieldNames,
                 'fieldValue' => $fieldValues
             ];
 
-            $fieldName = $row_inputs[$rowNo]['fieldName'];
-            $fieldValue = $row_inputs[$rowNo]['fieldValue'];
+            $fieldName = $row_inputs['fieldName'];
+            $fieldValue = $row_inputs['fieldValue'];
             $tableFormula = collect($formula)->pluck('formula')->toArray();
 
             $results = [];
