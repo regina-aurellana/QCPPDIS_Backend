@@ -58,6 +58,7 @@ Route::resource('take-off', TakeOffController::class);
 
 Route::resource('formula', FormulaController::class);
 
+Route::post('take-off-table-say-total', [TakeOffTableController::class, 'saveSayTotal']);
 Route::get('take-off-table-list/{take_off_table}', [TakeOffTableController::class, 'getAllTakeOffTables']);
 Route::resource('take-off-table', TakeOffTableController::class);
 

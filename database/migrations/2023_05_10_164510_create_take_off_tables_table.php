@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('take_off_id');
             $table->unsignedBigInteger('sow_category_id');
             $table->unsignedBigInteger('dupa_id');
+            $table->string('table_say')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

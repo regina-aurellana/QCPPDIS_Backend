@@ -236,9 +236,11 @@ class TakeOffTableFieldInputController extends Controller
             $fields = $table->takeOffTableField;
             $tableID = $table->id;
 
-            $test = $table->dupa;
-            $mes = $test->measures;
-            $formula = $mes->formula;
+            $dupa = $table->dupa;
+            $measure = $dupa->measures;
+            $formula = $measure->formula;
+
+            info($formula);
 
             foreach($fields as $table_field){
                 $table_fields[] = $table_field;
@@ -255,7 +257,6 @@ class TakeOffTableFieldInputController extends Controller
                             $column_value = $column_value / 100;
                         }
                         $fieldValues[$key][] = $column_value;
-
                 }
             }
 
@@ -270,17 +271,36 @@ class TakeOffTableFieldInputController extends Controller
 
             $results = [];
 
-            info($fieldName);
             foreach ($fieldValue as $input)
             {
                 $tableFormulaString = $tableFormula[0];
 
 
                 foreach ($fieldName as $nameIndex => $name) {
-                    $tableFormulaString = str_replace($name, $input[$nameIndex], $tableFormulaString);
+
+                    $newFormula = $tableFormulaString;
+
+                    // Concatinate Quantity to formula
+                    if($name == 'Quantity'){
+                        $newFormula = $tableFormulaString . '*' . $name;
+                    }
+
+                    // Concatinate Deduction to formula
+                    if($name == 'Deduction'){
+                        $newFormula = $tableFormulaString . '-' . $name;
+                    }
+
+                    // Concatinate Addition to formula
+                    if($name == 'Addition'){
+                        $newFormula = $tableFormulaString . '+' . $name;
+                    }
+
+                    // Replace FieldNames with respective input Value
+                    $tableFormulaString = str_replace($name, $input[$nameIndex], $newFormula);
+
                 }
 
-                // Add multiplication operator where necessary
+                // Add multiplication operator befor and after ()
                 $tableFormulaString = preg_replace('/([a-zA-Z0-9)])(\()/', '$1*$2', $tableFormulaString);
                 $tableFormulaString = preg_replace('/(\))([a-zA-Z0-9(])/', '$1*$2', $tableFormulaString);
 
@@ -303,6 +323,8 @@ class TakeOffTableFieldInputController extends Controller
 
         }
         return $table_compute;
+        // info("total: ");
+        // info($table_compute);
 
 
     }
