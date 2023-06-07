@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\DupaContent\AddDupaContentRequest;
+use App\Http\Requests\Dupa\MinorToolPercentageRequest;
 use App\Models\DupaContent;
 use App\Models\Dupa;
 use Illuminate\Support\Facades\DB;
@@ -43,20 +44,35 @@ class DupaContentController extends Controller
         }
     }
 
+    public function minorToolsPercentage(MinorToolPercentageRequest $request){
+
+        $dupa = Dupa::where('id', $request->dupa_id)->first();
+
+        $percent = $request->minor_tool_percentage;
+        $dupa->minor_tool_percentage = $percent;
+        $dupa->save();
+
+        return response()->json([
+            'status' => 'Success',
+            'message' => 'Saved'
+        ]);
+
+    }
+
     public function show(DupaContent $content)
     {
         $dupa_content = DupaContent::where('id', $content->id)
         ->with([
             'dupaEquipment' => function($q){
-                $q->select('dupa_content_id', 'dupa_equipment.*', 'equipment.hourly_rate', 'equipment.name', DB::raw('(dupa_equipment.no_of_unit * dupa_equipment.no_of_hour * equipment.hourly_rate) as equipment_amount'))
+                $q->select('dupa_content_id', 'dupa_equipment.*', 'equipment.hourly_rate', 'equipment.name', DB::raw('round((dupa_equipment.no_of_unit * dupa_equipment.no_of_hour * equipment.hourly_rate), 2) as equipment_amount'))
                   ->join('equipment', 'equipment.id', '=', 'dupa_equipment.equipment_id');
             },
             'dupaLabor'=> function($r){
-               $r->select('dupa_content_id', 'dupa_labors.*', 'labors.hourly_rate', 'labors.designation', DB::raw('(dupa_labors.no_of_person * dupa_labors.no_of_hour * labors.hourly_rate) as labor_amount'))
+               $r->select('dupa_content_id', 'dupa_labors.*', 'labors.hourly_rate', 'labors.designation', DB::raw('round((dupa_labors.no_of_person * dupa_labors.no_of_hour * labors.hourly_rate), 2) as labor_amount'))
                   ->join('labors', 'labors.id', '=', 'dupa_labors.labor_id');
             },
             'dupaMaterial' => function($s){
-                $s->select('dupa_content_id', 'dupa_materials.*', 'dupa_materials.quantity', 'materials.name', 'materials.unit_cost', DB::raw('(dupa_materials.quantity * materials.unit_cost) as material_amount'))
+                $s->select('dupa_content_id', 'dupa_materials.*', 'dupa_materials.quantity', 'materials.name', 'materials.unit_cost', DB::raw('round((dupa_materials.quantity * materials.unit_cost), 2) as material_amount'))
                 ->join('materials', 'materials.id', '=', 'dupa_materials.material_id');
             }
             ])
@@ -67,11 +83,26 @@ class DupaContentController extends Controller
             ->first()
             ->output_per_hour;
 
+         $tool_percentage = Dupa::find($content)
+            ->first()
+            ->minor_tool_percentage;
+
         // Get the total sum of dupaLabor
         $a_dupaLabor_Total = round($dupa_content->dupaLabor->sum('labor_amount'), 2);
 
-        // Get the total sum of dupaEquipment
-        $b_dupaEquipment_Total = round($dupa_content->dupaEquipment->sum('equipment_amount'), 2);
+        if($tool_percentage !== null){
+            $minor_tool_percentage_labor_cost = round(($tool_percentage / 100) * $a_dupaLabor_Total, 2);
+
+            // Get the total sum of dupaEquipment
+            $dupaEquipment_Total = round($dupa_content->dupaEquipment->sum('equipment_amount'), 2);
+            $b_dupaEquipment_Total = round($minor_tool_percentage_labor_cost + $dupaEquipment_Total, 2);
+
+        }else {
+            $minor_tool_percentage_labor_cost = 0;
+            $b_dupaEquipment_Total = round($dupa_content->dupaEquipment->sum('equipment_amount'), 2);
+        }
+
+
 
         // Get the Total sum of Labor and Equipment (A + B)
         $c_total_ab = round($a_dupaLabor_Total + $b_dupaEquipment_Total, 2);
@@ -103,6 +134,7 @@ class DupaContentController extends Controller
         return response()->json([
             'dupa_content' => $dupa_content,
             'a_dupaLaborTotal' => $a_dupaLabor_Total,
+            'minor_tool_percentage_labor_cost' => $minor_tool_percentage_labor_cost,
             'b_dupaEquipmentTotal' => $b_dupaEquipment_Total,
             'c_total_ab' => $c_total_ab,
             'd_direct_unit_cost_c_d' => $d_direct_unit_cost_c_d,

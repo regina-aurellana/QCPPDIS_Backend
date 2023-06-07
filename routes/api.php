@@ -28,6 +28,7 @@ use App\Http\Controllers\FormulaController;
 
 Route::resource('dupa', DupaController::class);
 
+Route::post('minor-tool-percentage', [DupaContentController::class, 'minorToolsPercentage']);
 Route::resource('content', DupaContentController::class);
 
 Route::resource('project', B3ProjectsController::class);
@@ -68,8 +69,8 @@ Route::get('take-off-table-field-input-compute/{take_off_table_field_input}', [T
 Route::get('take-off-table-field-input-list/{take_off_table_field_input}', [TakeOffTableFieldInputController::class, 'inputsByTakeOffIdAndTable']);
 Route::resource('take-off-table-field-input', TakeOffTableFieldInputController::class);
 
-Route::get('take-off-table-formula-compute', [TakeOffTableFormulaController::class, 'computeTable']);
-Route::resource('take-off-table-formula', TakeOffTableFormulaController::class);
+// Route::get('take-off-table-formula-compute', [TakeOffTableFormulaController::class, 'computeTable']);
+// Route::resource('take-off-table-formula', TakeOffTableFormulaController::class);
 
 Route::post('upload-material', [MaterialController::class, 'uploadMaterial']);
 Route::delete('revert-material', [MaterialController::class, 'revertMaterial']);

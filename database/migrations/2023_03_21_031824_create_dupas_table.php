@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('output_per_hour');
             $table->unsignedBigInteger('category_dupa_id');
             $table->string('direct_unit_cost')->nullable();
+            $table->string('minor_tool_percentage')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
