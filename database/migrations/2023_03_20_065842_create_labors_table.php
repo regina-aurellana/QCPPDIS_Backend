@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('labors', function (Blueprint $table) {
             $table->id();
-            $table->string('item_code');
+            $table->string('item_code')->nullable();
             $table->string('designation');
             $table->string('hourly_rate');
             $table->softDeletes();

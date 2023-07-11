@@ -16,20 +16,16 @@ class SowCategorySeeder extends Seeder
     {
         $sow_cat = [
             [
-                'item_code' => 'GR',
-                'name' => 'General Requirements'
+                'item_code' => 'Part I',
+                'name' => 'Facilities for the Engineer'
             ],
             [
-                'item_code' => 'OGR',
+                'item_code' => 'Part II',
                 'name' => 'Other General Requirements'
             ],
             [
-                'item_code' => 'AW',
-                'name' => 'Architectural Works'
-            ],
-            [
-                'item_code' => 'C/SW',
-                'name' => 'Civil/Structural Works'
+                'item_code' => 'Part III',
+                'name' => 'Civil, Mechanical, Electrical and Sanitary/Plumbing Works'
             ],
         ];
 

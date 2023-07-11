@@ -18,7 +18,7 @@ class SowSubCategorySeeder extends Seeder
             [
                 'item_code' => 'CSW01',
                 'name' => 'Earthworks',
-                'sow_category_id' => '4',
+                'sow_category_id' => '1',
             ],
             [
                 'item_code' => 'OGR03',
